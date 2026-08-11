@@ -1,0 +1,57 @@
+:root {
+  --ink: #07080b;
+  --paper: #eef1ea;
+  --mute: #8b9288;
+  --mute-2: #6a7168;
+  --line: #2a2f2c;
+  --panel: #101317;
+  --panel-2: #171b20;
+  --accent: #c6f24d;
+  --accent-ink: #0a0c08;
+  --web-mist: #9ef0d2;
+  --font-display: "Syne", sans-serif;
+  --font-body: "Sora", sans-serif;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--ink);
+  color: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}

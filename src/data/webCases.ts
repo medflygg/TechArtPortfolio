@@ -1,0 +1,88 @@
+export type WebCategoryId = "holo" | "launch";
+
+export type WebCaseKind = "living" | "carousel";
+
+export type WebCaseMeta = {
+  id: string;
+  category: WebCategoryId;
+  accent: string;
+  kind: WebCaseKind;
+  livingId?: string;
+  portfolioId?: string;
+};
+
+export const webCategories: {
+  id: WebCategoryId;
+  visual: "holo-ui" | "launch-sites";
+}[] = [
+  { id: "launch", visual: "launch-sites" },
+  { id: "holo", visual: "holo-ui" },
+];
+
+/** Full websites order: shops → YY → Kiln (#3) → grocery → NordPulse last */
+export const webCases: WebCaseMeta[] = [
+  {
+    id: "aurora-flute",
+    category: "holo",
+    accent: "#c4a8ff",
+    kind: "living",
+  },
+  {
+    id: "mirage-deck",
+    category: "holo",
+    accent: "#7ec8f0",
+    kind: "living",
+  },
+  {
+    id: "prism-controls",
+    category: "holo",
+    accent: "#f0a8e8",
+    kind: "living",
+  },
+  {
+    id: "mochalki",
+    category: "launch",
+    accent: "#c4a574",
+    kind: "carousel",
+    portfolioId: "mochalki",
+  },
+  {
+    id: "yy-portfolio",
+    category: "launch",
+    accent: "#111111",
+    kind: "carousel",
+    portfolioId: "yy-portfolio",
+  },
+  {
+    id: "kiln-site",
+    category: "launch",
+    accent: "#e8c07a",
+    kind: "living",
+    livingId: "kiln-identity",
+  },
+  {
+    id: "greenbasket",
+    category: "launch",
+    accent: "#16a34a",
+    kind: "living",
+  },
+  {
+    id: "nordpulse",
+    category: "launch",
+    accent: "#2563eb",
+    kind: "living",
+  },
+];
+
+export function getWebCategory(id: string) {
+  if (id === "brand") return null;
+  return webCategories.find((c) => c.id === id) ?? null;
+}
+
+export function getWebCase(id: string) {
+  return webCases.find((c) => c.id === id) ?? null;
+}
+
+export function casesForCategory(category: WebCategoryId) {
+  return webCases.filter((c) => c.category === category);
+}

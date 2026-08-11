@@ -1,0 +1,47 @@
+/** Curated Unsplash photos for fake portfolio sites (hotlink-friendly). */
+export const photos = {
+  financeCity:
+    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80&auto=format&fit=crop",
+  financeDesk:
+    "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=900&q=80&auto=format&fit=crop",
+  financeTeam:
+    "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=900&q=80&auto=format&fit=crop",
+  abstractGlass:
+    "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=900&q=80&auto=format&fit=crop",
+  neonCard:
+    "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80&auto=format&fit=crop",
+  foilArt:
+    "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&q=80&auto=format&fit=crop",
+  hologram:
+    "https://images.unsplash.com/photo-1634017839464-5c339bbe3c18?w=800&q=80&auto=format&fit=crop",
+  productUi:
+    "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=1000&q=80&auto=format&fit=crop",
+  dashboard:
+    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1000&q=80&auto=format&fit=crop",
+  office:
+    "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1000&q=80&auto=format&fit=crop",
+  journal:
+    "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=1000&q=80&auto=format&fit=crop",
+  library:
+    "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=900&q=80&auto=format&fit=crop",
+  research:
+    "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=900&q=80&auto=format&fit=crop",
+  workshop:
+    "https://images.unsplash.com/photo-1504328345603-5a6b563ff12b?w=1200&q=80&auto=format&fit=crop",
+  copper:
+    "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=900&q=80&auto=format&fit=crop",
+  tools:
+    "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=900&q=80&auto=format&fit=crop",
+  device:
+    "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200&q=80&auto=format&fit=crop",
+  nightCity:
+    "https://images.unsplash.com/photo-1514565131-fce0801e5785?w=1200&q=80&auto=format&fit=crop",
+  crowd:
+    "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=900&q=80&auto=format&fit=crop",
+  invite:
+    "https://images.unsplash.com/photo-1519677100203-a0e668c92439?w=1000&q=80&auto=format&fit=crop",
+  texture:
+    "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=900&q=80&auto=format&fit=crop",
+  portrait:
+    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80&auto=format&fit=crop",
+} as const;
