@@ -1,7 +1,28 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { copyFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
-// https://vite.dev/config/
+/**
+ * Project Pages: https://<user>.github.io/<repo>/
+ * Override locally: VITE_BASE_PATH=/ta-portfolio/ npm run build
+ */
+const repoName = process.env.GITHUB_REPOSITORY?.split("/")[1];
+const base =
+  process.env.VITE_BASE_PATH ??
+  (process.env.GITHUB_ACTIONS && repoName ? `/${repoName}/` : "/");
+
 export default defineConfig({
-  plugins: [react()],
-})
+  base,
+  plugins: [
+    react(),
+    {
+      name: "spa-github-pages-404",
+      closeBundle() {
+        const indexHtml = resolve(process.cwd(), "dist/index.html");
+        const notFoundHtml = resolve(process.cwd(), "dist/404.html");
+        copyFileSync(indexHtml, notFoundHtml);
+      },
+    },
+  ],
+});

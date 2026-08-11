@@ -1,3 +1,5 @@
+import { publicUrl } from "../lib/publicUrl";
+
 export type PortfolioAudience =
   | "ecommerce"
   | "portfolio"
@@ -28,13 +30,13 @@ export const portfolioCases: PortfolioCase[] = [
     accent: "#c4a574",
     theme: "warm",
     view: "carousel",
-    cover: "/portfolio/mochalki/01-home.png",
+    cover: publicUrl("portfolio/mochalki/01-home.png"),
     slides: [
-      { kind: "image", src: "/portfolio/mochalki/01-home.png", label: "Home" },
-      { kind: "image", src: "/portfolio/mochalki/02-catalog.png", label: "Catalog" },
-      { kind: "image", src: "/portfolio/mochalki/03-pdp.png", label: "Product" },
-      { kind: "image", src: "/portfolio/mochalki/04-cart.png", label: "Cart" },
-      { kind: "image", src: "/portfolio/mochalki/05-checkout.png", label: "Checkout" },
+      { kind: "image", src: publicUrl("portfolio/mochalki/01-home.png"), label: "Home" },
+      { kind: "image", src: publicUrl("portfolio/mochalki/02-catalog.png"), label: "Catalog" },
+      { kind: "image", src: publicUrl("portfolio/mochalki/03-pdp.png"), label: "Product" },
+      { kind: "image", src: publicUrl("portfolio/mochalki/04-cart.png"), label: "Cart" },
+      { kind: "image", src: publicUrl("portfolio/mochalki/05-checkout.png"), label: "Checkout" },
     ],
   },
   {
@@ -43,13 +45,13 @@ export const portfolioCases: PortfolioCase[] = [
     accent: "#111111",
     theme: "light",
     view: "carousel",
-    cover: "/portfolio/saitik/01-home.png",
+    cover: publicUrl("portfolio/saitik/01-home.png"),
     slides: [
-      { kind: "image", src: "/portfolio/saitik/01-home.png", label: "Home" },
-      { kind: "image", src: "/portfolio/saitik/02-projects.png", label: "Projects" },
-      { kind: "image", src: "/portfolio/saitik/03-project.png", label: "Case" },
-      { kind: "image", src: "/portfolio/saitik/04-about.png", label: "About" },
-      { kind: "image", src: "/portfolio/saitik/05-contacts.png", label: "Contacts" },
+      { kind: "image", src: publicUrl("portfolio/saitik/01-home.png"), label: "Home" },
+      { kind: "image", src: publicUrl("portfolio/saitik/02-projects.png"), label: "Projects" },
+      { kind: "image", src: publicUrl("portfolio/saitik/03-project.png"), label: "Case" },
+      { kind: "image", src: publicUrl("portfolio/saitik/04-about.png"), label: "About" },
+      { kind: "image", src: publicUrl("portfolio/saitik/05-contacts.png"), label: "Contacts" },
     ],
   },
   {
@@ -59,7 +61,7 @@ export const portfolioCases: PortfolioCase[] = [
     theme: "warm",
     view: "living",
     livingId: "kiln-identity",
-    cover: "/portfolio/kiln/art/vessel.png",
+    cover: publicUrl("portfolio/kiln/art/vessel.png"),
   },
   {
     id: "greenbasket",

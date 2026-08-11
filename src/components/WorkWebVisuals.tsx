@@ -1,4 +1,5 @@
 import { type CSSProperties, type ReactNode } from "react";
+import { publicUrl } from "../lib/publicUrl";
 
 type VisualProps = {
   title: string;
@@ -106,22 +107,22 @@ export function HoloUiVisual({ title }: VisualProps) {
 export function LaunchSitesVisual({ title }: VisualProps) {
   const tiles = [
     {
-      src: "/portfolio/mochalki/01-home.png",
+      src: publicUrl("portfolio/mochalki/01-home.png"),
       label: "Shop",
       url: "mochalki.shop",
     },
     {
-      src: "/portfolio/saitik/01-home.png",
+      src: publicUrl("portfolio/saitik/01-home.png"),
       label: "YY",
       url: "yy.studio",
     },
     {
-      src: "/portfolio/grocery/hero.jpg",
+      src: publicUrl("portfolio/grocery/hero.jpg"),
       label: "Grocery",
       url: "greenbasket.shop",
     },
     {
-      src: "/portfolio/kiln/art/vessel.png",
+      src: publicUrl("portfolio/kiln/art/vessel.png"),
       label: "Atelier",
       url: "kiln.atelier",
     },

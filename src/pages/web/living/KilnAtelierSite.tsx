@@ -1099,19 +1099,6 @@ function ArtImage({ src, alt }: { src: string; alt: string }) {
   );
 }
 
-function HeatRings() {
-  return (
-    <div className="ka-hero__rings" aria-hidden>
-      <svg viewBox="0 0 100 100">
-        <circle className="ka-ring" cx="50" cy="50" r="18" />
-        <circle className="ka-ring" cx="50" cy="50" r="28" />
-        <circle className="ka-ring" cx="50" cy="50" r="38" />
-        <circle className="ka-ring" cx="50" cy="50" r="46" />
-      </svg>
-    </div>
-  );
-}
-
 function ProcessIcon({ step }: { step: number }) {
   const icons = [
     /* heat */

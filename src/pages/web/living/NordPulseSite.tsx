@@ -1,7 +1,6 @@
 import { type CSSProperties, type ReactNode, useState } from "react";
 
 export type LivingMode = "full" | "thumb";
-type Locale = "en" | "ru";
 type PageId = "dashboard" | "users" | "products" | "analytics" | "orders";
 
 const COPY = {
