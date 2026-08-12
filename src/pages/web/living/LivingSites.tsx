@@ -1606,6 +1606,44 @@ function LivingStyles() {
         color: rgba(255, 255, 255, 0.55);
       }
 
+      @media (max-width: 640px) {
+        .live-aurora__hero,
+        .live-prism__hero,
+        .live-north__hero,
+        .live-vault__hero,
+        .live-team,
+        .live-signal__band,
+        .live-mirage__hero {
+          grid-template-columns: 1fr;
+        }
+
+        .live-chrome { height: 22px; }
+
+        .live-folio {
+          flex-direction: column;
+        }
+
+        .live-folio__side {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 4px;
+          border-right: 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .live-folio__side .live-nav__brand {
+          margin: 0 8px 0 0;
+        }
+
+        .live-folio__side .live-nav__btn {
+          width: auto;
+          margin: 0;
+        }
+      }
+
       @media (max-width: 420px) {
         .live-aurora__hero,
         .live-prism__hero,
@@ -1615,7 +1653,6 @@ function LivingStyles() {
         .live-signal__band {
           grid-template-columns: 1fr;
         }
-        .live-folio__side { width: 72px; }
       }
     `}</style>
   );

@@ -1055,6 +1055,54 @@ function KaStyles() {
         color: rgba(255, 245, 235, 0.28);
         text-align: center;
       }
+
+      @media (max-width: 640px) {
+        .ka-root[data-mode="full"] .ka-chrome {
+          height: 22px;
+          padding: 0 8px;
+        }
+
+        .ka-root[data-mode="full"] .ka-nav {
+          flex-wrap: wrap;
+          gap: 6px;
+          padding: 8px 10px;
+        }
+
+        .ka-root[data-mode="full"] .ka-nav__brand {
+          width: 100%;
+          margin-right: 0;
+          margin-bottom: 2px;
+        }
+
+        .ka-root[data-mode="full"] .ka-nav__link {
+          font-size: 9px;
+          padding: 5px 7px;
+        }
+
+        .ka-root[data-mode="full"] .ka-hero__copy {
+          max-width: 100%;
+          padding: 18px 12px 14px;
+        }
+
+        .ka-root[data-mode="full"] .ka-hero h1 {
+          font-size: clamp(22px, 7vw, 32px);
+        }
+
+        .ka-root[data-mode="full"] .ka-strip__layout,
+        .ka-root[data-mode="full"] .ka-masonry,
+        .ka-root[data-mode="full"] .ka-process,
+        .ka-root[data-mode="full"] .ka-contact {
+          grid-template-columns: 1fr;
+        }
+
+        .ka-root[data-mode="full"] .ka-contact__deco {
+          display: none;
+        }
+
+        .ka-root[data-mode="full"] .ka-feature {
+          min-height: 140px;
+        }
+      }
     `}</style>
   );
 }

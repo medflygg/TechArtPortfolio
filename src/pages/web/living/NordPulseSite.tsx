@@ -636,6 +636,50 @@ function NpStyles() {
         color: #fff;
         border-color: var(--np-a);
       }
+
+      @media (max-width: 640px) {
+        .np-root[data-mode="full"] .np-body {
+          flex-direction: column;
+        }
+
+        .np-root[data-mode="full"] .np-side {
+          width: 100%;
+          flex-direction: row;
+          align-items: center;
+          gap: 4px;
+          padding: 6px 8px;
+          overflow-x: auto;
+          border-right: 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .np-root[data-mode="full"] .np-side__logo {
+          margin-right: 6px;
+          margin-bottom: 0;
+          flex-shrink: 0;
+        }
+
+        .np-root[data-mode="full"] .np-side__btn {
+          flex-shrink: 0;
+          white-space: nowrap;
+        }
+
+        .np-root[data-mode="full"] .np-kpi-row {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .np-root[data-mode="full"] .np-split {
+          grid-template-columns: 1fr;
+        }
+
+        .np-root[data-mode="full"] .np-main {
+          overflow-x: auto;
+        }
+
+        .np-root[data-mode="full"] .np-body {
+          overflow: auto;
+        }
+      }
     `}</style>
   );
 }

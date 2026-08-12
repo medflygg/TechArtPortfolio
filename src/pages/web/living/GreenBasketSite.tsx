@@ -775,6 +775,50 @@ function GbStyles() {
         font-size: 9px;
         font-weight: 600;
       }
+
+      @media (max-width: 640px) {
+        .gb-root[data-mode="full"] .gb-nav {
+          flex-wrap: wrap;
+          gap: 6px;
+          padding: 8px 10px;
+        }
+
+        .gb-root[data-mode="full"] .gb-nav__brand {
+          width: 100%;
+        }
+
+        .gb-root[data-mode="full"] .gb-hero__copy {
+          max-width: 100%;
+          padding: 16px 12px 12px;
+        }
+
+        .gb-root[data-mode="full"] .gb-hero h1 {
+          font-size: clamp(20px, 6.5vw, 28px);
+        }
+
+        .gb-root[data-mode="full"] .gb-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .gb-root[data-mode="full"] .gb-split,
+        .gb-root[data-mode="full"] .gb-pdp,
+        .gb-root[data-mode="full"] .gb-cart-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .gb-root[data-mode="full"] .gb-nutrition {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .gb-root[data-mode="full"] .gb-cart-line {
+          grid-template-columns: 40px 1fr auto;
+          grid-template-rows: auto auto;
+        }
+
+        .gb-root[data-mode="full"] .gb-form-row {
+          grid-template-columns: 1fr;
+        }
+      }
     `}</style>
   );
 }
