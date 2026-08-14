@@ -17,6 +17,7 @@ export function WebCasePage() {
 
   const listing = t.workWeb.cases[meta.id as keyof typeof t.workWeb.cases];
   const catCopy = t.workWeb.categories[cat.id];
+  const w = t.workWeb;
 
   if (!listing) {
     return <Navigate to={`/work/web/${cat.id}`} replace />;
@@ -27,6 +28,38 @@ export function WebCasePage() {
       ? getPortfolioCase(meta.portfolioId)
       : null;
 
+  const isLiving = !(meta.kind === "carousel" && portfolio?.slides);
+
+  if (isLiving) {
+    return (
+      <main className="page page--dark site-case site-case--live">
+        <div className="site-case__bar">
+          <div className="site-case__bar-main">
+            <Link className="site-case__bar-back" to={`/work/web/${cat.id}`}>
+              {catCopy.back}
+            </Link>
+            <div className="site-case__bar-meta">
+              <h1>{listing.title}</h1>
+              <p className="site-case__role site-case__bar-role">{w.caseRole}</p>
+            </div>
+          </div>
+          <Link className="btn btn--accent site-case__bar-cta" to="/contact">
+            {w.caseCta}
+          </Link>
+        </div>
+
+        <div className="site-case__frame site-case__frame--viewport">
+          <LivingSite
+            caseId={meta.livingId ?? meta.id}
+            accent={meta.accent}
+            locale={locale}
+            mode="full"
+          />
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="page page--dark site-case">
       <p className="wc-back">
@@ -35,33 +68,25 @@ export function WebCasePage() {
       <header className="site-case__head">
         <p className="section-kicker">{listing.tags}</p>
         <h1>{listing.title}</h1>
-        <p className="site-case__hint">
-          {meta.kind === "carousel"
-            ? locale === "ru"
-              ? "Листайте экраны — многостраничный кейс из реального макета."
-              : "Browse screens — a multi-page case from a real design file."
-            : locale === "ru"
-              ? "Кликайте разделы внутри макета — у сайта несколько страниц и живой интерактив."
-              : "Click sections inside the mock — each site has multiple pages and live interaction."}
-        </p>
+        <p className="site-case__role">{w.caseRole}</p>
+        <p className="site-case__hint">{w.caseHintCarousel}</p>
       </header>
 
-      {meta.kind === "carousel" && portfolio?.slides ? (
-        <CaseCarousel
-          slides={portfolio.slides}
-          accent={meta.accent}
-          title={listing.title}
-        />
-      ) : (
-        <div className="site-case__frame site-case__frame--tall">
-          <LivingSite
-            caseId={meta.livingId ?? meta.id}
-            accent={meta.accent}
-            locale={locale}
-            mode="full"
-          />
+      <CaseCarousel
+        slides={portfolio!.slides!}
+        accent={meta.accent}
+        title={listing.title}
+      />
+
+      <aside className="site-case__cta">
+        <div>
+          <h2>{w.caseCtaTitle}</h2>
+          <p>{w.caseCtaBody}</p>
         </div>
-      )}
+        <Link className="btn btn--accent" to="/contact">
+          {w.caseCta}
+        </Link>
+      </aside>
     </main>
   );
 }

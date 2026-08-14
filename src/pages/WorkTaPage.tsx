@@ -30,6 +30,9 @@ export function WorkTaPage() {
 
   return (
     <main className="page page--dark">
+      <p className="wc-back">
+        <Link to="/">{t.nav.backHome}</Link>
+      </p>
       <header className="section-head section-head--split">
         <div>
           <p className="section-kicker">{w.kicker}</p>
@@ -37,13 +40,31 @@ export function WorkTaPage() {
           <p>{w.lead}</p>
         </div>
         <div className="section-switch">
-          <Link to="/work/web">{t.nav.web}</Link>
+          <Link to="/work/web">{t.nav.work}</Link>
           <Link to="/work/ta" aria-current="page">
             {t.nav.ta}
           </Link>
+          <Link to="/lab/shaders">{t.nav.shaders}</Link>
         </div>
       </header>
       <div className="work-grid">
+        <Link className="work-card work-card--rich" to="/lab/shaders">
+          <div className="work-card__thumb work-card__thumb--rich work-card__thumb--ta-lab" aria-hidden>
+            <div className="ta-lab-visual">
+              <div className="ta-lab-visual__glow" />
+              <div className="ta-lab-visual__grid" />
+              <div className="ta-lab-visual__copy">
+                <strong>{w.lab.title}</strong>
+                <em>GLSL · live</em>
+              </div>
+            </div>
+          </div>
+          <div className="work-card__meta">
+            <h2>{w.lab.title}</h2>
+            <p>{w.lab.tags}</p>
+          </div>
+        </Link>
+
         {taProjects.map((project) => {
           const copy = w.projects[project.slug];
           return (

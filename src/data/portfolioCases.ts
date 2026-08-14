@@ -30,13 +30,12 @@ export const portfolioCases: PortfolioCase[] = [
     accent: "#c4a574",
     theme: "warm",
     view: "carousel",
-    cover: publicUrl("portfolio/mochalki/01-home.png"),
+    cover: publicUrl("portfolio/mochalki/products/hero.jpg"),
     slides: [
-      { kind: "image", src: publicUrl("portfolio/mochalki/01-home.png"), label: "Home" },
-      { kind: "image", src: publicUrl("portfolio/mochalki/02-catalog.png"), label: "Catalog" },
-      { kind: "image", src: publicUrl("portfolio/mochalki/03-pdp.png"), label: "Product" },
-      { kind: "image", src: publicUrl("portfolio/mochalki/04-cart.png"), label: "Cart" },
-      { kind: "image", src: publicUrl("portfolio/mochalki/05-checkout.png"), label: "Checkout" },
+      { kind: "image", src: publicUrl("portfolio/mochalki/products/hero.jpg"), label: "Home" },
+      { kind: "image", src: publicUrl("portfolio/mochalki/products/body.jpg"), label: "Body" },
+      { kind: "image", src: publicUrl("portfolio/mochalki/products/mitt.jpg"), label: "Mitt" },
+      { kind: "image", src: publicUrl("portfolio/mochalki/products/face.jpg"), label: "Face" },
     ],
   },
   {

@@ -4,8 +4,10 @@ import { hexToRgb } from "../shaders/webEffects";
 type Props = {
   fragment: string;
   params: Record<string, number | string>;
-  image?: HTMLImageElement | ImageBitmap | null;
+  image?: TexImageSource | null;
   onError?: (message: string | null) => void;
+  /** When true, canvas alpha clears to 0 so a layer underneath (e.g. smoke) can show. */
+  transparent?: boolean;
 };
 
 const VERT = `
@@ -31,7 +33,13 @@ function makeFallbackImage(): HTMLCanvasElement {
   return c;
 }
 
-export function WebEffectCanvas({ fragment, params, image, onError }: Props) {
+export function WebEffectCanvas({
+  fragment,
+  params,
+  image,
+  onError,
+  transparent = false,
+}: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
   const paramsRef = useRef(params);
   paramsRef.current = params;
@@ -47,16 +55,22 @@ export function WebEffectCanvas({ fragment, params, image, onError }: Props) {
     canvas.style.height = "100%";
     canvas.style.display = "block";
     canvas.style.touchAction = "none";
+    if (transparent) canvas.style.background = "transparent";
     mount.appendChild(canvas);
 
     const gl = canvas.getContext("webgl", {
-      alpha: false,
+      alpha: transparent,
+      // Premul: shaders write falloff into rgb; browser adds over the smoke layer.
+      premultipliedAlpha: transparent,
       antialias: false,
       powerPreference: "high-performance",
     });
     if (!gl) {
       onError?.("WebGL is required");
       return;
+    }
+    if (transparent) {
+      gl.clearColor(0, 0, 0, 0);
     }
 
     const compile = (type: number, src: string) => {
@@ -77,7 +91,22 @@ export function WebEffectCanvas({ fragment, params, image, onError }: Props) {
     let imageTex: WebGLTexture | null = null;
     let raf = 0;
     const start = performance.now();
-    const mouse = { x: 0, y: 0 };
+    let last = start;
+    let phase = 0;
+    // tip/px = what shaders see. With uInertia > 0, tip spring-lags behind the pointer
+    // so heavy liquids (mercury) keep moving after the cursor stops.
+    const mouse = {
+      x: 0,
+      y: 0,
+      tipX: 0,
+      tipY: 0,
+      vx: 0,
+      vy: 0,
+      px: 0,
+      py: 0,
+      primed: false,
+    };
+    const hover = { current: 0, target: 0 };
     const fallback = makeFallbackImage();
 
     try {
@@ -119,7 +148,10 @@ export function WebEffectCanvas({ fragment, params, image, onError }: Props) {
 
     const uRes = gl.getUniformLocation(prog, "uResolution");
     const uTime = gl.getUniformLocation(prog, "uTime");
+    const uPhase = gl.getUniformLocation(prog, "uPhase");
     const uMouse = gl.getUniformLocation(prog, "uMouse");
+    const uMousePrev = gl.getUniformLocation(prog, "uMousePrev");
+    const uHover = gl.getUniformLocation(prog, "uHover");
     const uImage = gl.getUniformLocation(prog, "uImage");
     const uHasImage = gl.getUniformLocation(prog, "uHasImage");
 
@@ -150,6 +182,13 @@ export function WebEffectCanvas({ fragment, params, image, onError }: Props) {
       gl.viewport(0, 0, w, h);
       mouse.x = w * 0.5;
       mouse.y = h * 0.5;
+      mouse.tipX = mouse.x;
+      mouse.tipY = mouse.y;
+      mouse.vx = 0;
+      mouse.vy = 0;
+      mouse.px = mouse.x;
+      mouse.py = mouse.y;
+      mouse.primed = false;
     };
     resize();
     const ro = new ResizeObserver(resize);
@@ -159,19 +198,82 @@ export function WebEffectCanvas({ fragment, params, image, onError }: Props) {
       const rect = canvas.getBoundingClientRect();
       const dprX = canvas.width / Math.max(rect.width, 1);
       const dprY = canvas.height / Math.max(rect.height, 1);
-      mouse.x = (e.clientX - rect.left) * dprX;
-      mouse.y = (rect.height - (e.clientY - rect.top)) * dprY;
+      const nx = (e.clientX - rect.left) * dprX;
+      const ny = (rect.height - (e.clientY - rect.top)) * dprY;
+      if (!mouse.primed) {
+        mouse.tipX = nx;
+        mouse.tipY = ny;
+        mouse.px = nx;
+        mouse.py = ny;
+        mouse.vx = 0;
+        mouse.vy = 0;
+        mouse.primed = true;
+      }
+      mouse.x = nx;
+      mouse.y = ny;
+      hover.target = 1;
+    };
+    const onEnter = () => {
+      hover.target = 1;
+    };
+    const onLeave = () => {
+      hover.target = 0;
     };
     canvas.addEventListener("pointermove", onMove);
+    canvas.addEventListener("pointerenter", onEnter);
+    canvas.addEventListener("pointerleave", onLeave);
 
     const tick = () => {
       raf = requestAnimationFrame(tick);
       if (!prog) return;
       syncImage();
       gl.useProgram(prog);
+
+      const now = performance.now();
+      // Clamp dt so a backgrounded tab resumes instead of jumping a whole second.
+      const dt = Math.min((now - last) / 1000, 1 / 20);
+      last = now;
+      const pNow = paramsRef.current;
+      const speed = pNow.uSpeed;
+      phase += dt * (typeof speed === "number" ? speed : 1);
+
+      const inertia =
+        typeof pNow.uInertia === "number" ? Math.min(Math.max(pNow.uInertia, 0), 1) : 0;
+      // Heavier liquids ease hover in/out slower too.
+      const hoverEase = inertia > 0.001 ? 0.045 + (1 - inertia) * 0.1 : 0.14;
+      hover.current += (hover.target - hover.current) * hoverEase;
+
+      mouse.px = mouse.tipX;
+      mouse.py = mouse.tipY;
+      if (inertia > 0.001 && mouse.primed) {
+        // Spring-damper: tip lags and coasts — reads as viscosity.
+        const follow = 16 - inertia * 13.5; // 16 → 2.5
+        const drag = Math.pow(0.72 + inertia * 0.22, dt * 60);
+        mouse.vx = (mouse.vx + (mouse.x - mouse.tipX) * follow * dt) * drag;
+        mouse.vy = (mouse.vy + (mouse.y - mouse.tipY) * follow * dt) * drag;
+        // Cap tip step so a big lag never dumps a UV-tearing delta into shaders.
+        const maxStep = Math.min(canvas.width, canvas.height) * 0.045;
+        const step = Math.hypot(mouse.vx, mouse.vy);
+        if (step > maxStep && step > 1e-6) {
+          const s = maxStep / step;
+          mouse.vx *= s;
+          mouse.vy *= s;
+        }
+        mouse.tipX += mouse.vx;
+        mouse.tipY += mouse.vy;
+      } else {
+        mouse.tipX = mouse.x;
+        mouse.tipY = mouse.y;
+        mouse.vx = 0;
+        mouse.vy = 0;
+      }
+
       gl.uniform2f(uRes, canvas.width, canvas.height);
-      gl.uniform1f(uTime, (performance.now() - start) / 1000);
-      gl.uniform2f(uMouse, mouse.x, mouse.y);
+      gl.uniform1f(uTime, (now - start) / 1000);
+      if (uPhase) gl.uniform1f(uPhase, phase);
+      if (uMousePrev) gl.uniform2f(uMousePrev, mouse.px, mouse.py);
+      gl.uniform2f(uMouse, mouse.tipX, mouse.tipY);
+      if (uHover) gl.uniform1f(uHover, hover.current);
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, imageTex);
       if (uImage) gl.uniform1i(uImage, 0);
@@ -192,6 +294,7 @@ export function WebEffectCanvas({ fragment, params, image, onError }: Props) {
           if (locU) gl.uniform1f(locU, value);
         }
       }
+      if (transparent) gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
     tick();
@@ -200,12 +303,14 @@ export function WebEffectCanvas({ fragment, params, image, onError }: Props) {
       cancelAnimationFrame(raf);
       ro.disconnect();
       canvas.removeEventListener("pointermove", onMove);
+      canvas.removeEventListener("pointerenter", onEnter);
+      canvas.removeEventListener("pointerleave", onLeave);
       if (buf) gl.deleteBuffer(buf);
       if (imageTex) gl.deleteTexture(imageTex);
       if (prog) gl.deleteProgram(prog);
       if (canvas.parentElement === mount) mount.removeChild(canvas);
     };
-  }, [fragment, onError]);
+  }, [fragment, onError, transparent]);
 
   return <div ref={mountRef} style={{ width: "100%", height: "100%" }} />;
 }

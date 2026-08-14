@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useI18n } from "../i18n/I18nProvider";
 
-const capKeys = ["01", "02", "03", "04"] as const;
+const capKeys = ["01", "02", "03", "04", "05"] as const;
 
 export function ContactPage() {
   const { t } = useI18n();
@@ -9,6 +9,9 @@ export function ContactPage() {
 
   return (
     <main className="page page--dark">
+      <p className="wc-back">
+        <Link to="/">{c.back}</Link>
+      </p>
       <div className="pipeline pipeline--dark">
         <div className="pipeline__intro">
           <p className="section-kicker">{c.kicker}</p>
@@ -18,23 +21,28 @@ export function ContactPage() {
           <p>{c.lead}</p>
           <ul className="pipeline__contacts">
             <li>
-              <span>{c.emailLabel}</span>
-              <a href={`mailto:${c.email}`}>{c.email}</a>
-            </li>
-            <li>
               <span>{c.telegramLabel}</span>
               <a href={c.telegramUrl} target="_blank" rel="noreferrer">
                 {c.telegram}
               </a>
             </li>
+            <li>
+              <span>{c.emailLabel}</span>
+              <a href={`mailto:${c.email}`}>{c.email}</a>
+            </li>
           </ul>
           <div className="cta-row" style={{ marginTop: 28 }}>
-            <Link className="btn btn--accent" to="/lab/web">
-              {c.ctaStudio}
-            </Link>
-            <Link className="btn btn--ghost" to="/lab/shaders">
-              {c.ctaShaders}
-            </Link>
+            <a
+              className="btn btn--accent"
+              href={c.telegramUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {c.ctaTelegram}
+            </a>
+            <a className="btn btn--ghost" href={`mailto:${c.email}`}>
+              {c.ctaEmail}
+            </a>
           </div>
         </div>
         <ol className="pipeline__list pipeline__list--dark">

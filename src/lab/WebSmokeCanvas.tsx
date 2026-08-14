@@ -11,10 +11,53 @@ export { defaultSmokeParams, asSmokeParams, SMOKE_SIM_REVISION } from "./smokePa
  * inside the frame (“aquarium” walls).
  */
 
+type SmokeLook = "smoke" | "mercury";
+
 type Props = {
   params: SmokeParams;
   onError?: (message: string | null) => void;
+  /**
+   * Optional alpha mark. When present the sim runs *inside* the logo: the shape
+   * emits smoke, confines density and damps velocity at its border.
+   */
+  mask?: TexImageSource | null;
+  /** Matches logoUv() in the fragment effects so the Size slider agrees. */
+  maskScale?: number;
+  /**
+   * Keep the field alive without a cursor — used as Logo Lab atmosphere under
+   * translucent effects. Emits patchy density across the frame every tick.
+   */
+  ambient?: boolean;
+  /**
+   * Same Stam fluids as smoke; mercury only changes the display (solid metal
+   * body + density as surface height).
+   */
+  look?: SmokeLook;
 };
+
+const MARK = `
+uniform sampler2D uMask;
+uniform float uHasMask;
+uniform vec2 uAspect;
+uniform float uMaskScale;
+vec2 markUv(vec2 uv){
+  vec2 frag = uv * uAspect;
+  vec2 p = (frag - 0.5 * uAspect) / min(uAspect.x, uAspect.y);
+  return p * (1.28 / max(uMaskScale, 0.25)) + 0.5;
+}
+float mark(vec2 uv) {
+  if (uHasMask < 0.5) return 1.0;
+  vec2 m = markUv(uv);
+  if (m.x < 0.0 || m.x > 1.0 || m.y < 0.0 || m.y > 1.0) return 0.0;
+  return texture(uMask, m).r; // coverage; alpha holds the distance field
+}
+float markSdf(vec2 uv){
+  if (uHasMask < 0.5) return 1.0;
+  vec2 m = markUv(uv);
+  vec2 c = clamp(m, 0.0, 1.0);
+  return (texture(uMask, c).a - 0.5) * 2.0 * 0.085 - length(m - c);
+}
+`;
 
 const VERT = `#version 300 es
 in vec2 aPos;
@@ -78,11 +121,45 @@ uniform vec2 uTexel;
 uniform float uDt;
 uniform float uDensDiss;
 uniform float uHeatDiss;
+${MARK}
 void main() {
   vec2 coord = vUv - uDt * texture(uVelocity, vUv).xy * uTexel;
   coord = clamp(coord, uTexel, 1.0 - uTexel);
   vec4 s = texture(uSource, coord);
-  fragColor = vec4(s.x * uDensDiss, s.y * uHeatDiss, 0.0, 1.0);
+  // Whatever drifts past the silhouette dies there — smoke stays in the mark.
+  float keep = uHasMask > 0.5 ? smoothstep(0.25, 0.6, mark(vUv)) : 1.0;
+  fragColor = vec4(s.x * uDensDiss * keep, s.y * uHeatDiss * keep, 0.0, 1.0);
+}
+`;
+
+/** Continuous, patchy emission from inside the mark — the logo smoulders. */
+const EMIT = `#version 300 es
+precision highp float;
+in vec2 vUv;
+out vec4 fragColor;
+uniform sampler2D uTarget;
+uniform float uTime;
+uniform float uAmount;
+${MARK}
+float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float noise(vec2 p){
+  vec2 i = floor(p), f = fract(p);
+  float a = hash(i), b = hash(i + vec2(1, 0));
+  float c = hash(i + vec2(0, 1)), d = hash(i + vec2(1, 1));
+  vec2 u = f * f * (3.0 - 2.0 * f);
+  return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+}
+void main() {
+  vec3 base = texture(uTarget, vUv).xyz;
+  float m = smoothstep(0.4, 0.85, mark(vUv));
+  // Logo emit uses mark space; ambient full-frame uses screen UVs so patches
+  // drift across the whole studio instead of clustering in the mark box.
+  vec2 nuv = uHasMask > 0.5 ? markUv(vUv) : vUv * vec2(1.7, 1.0);
+  float n = noise(nuv * 6.5 + vec2(uTime * 0.45, -uTime * 0.62));
+  n = smoothstep(0.28, 0.88, n);
+  float add = uAmount * m * n;
+  float room = max(0.0, 0.62 - base.x);
+  fragColor = vec4(base.x + min(add, room), max(base.y, n * m * 0.9), base.z, 1.0);
 }
 `;
 
@@ -219,6 +296,7 @@ uniform float uDt;
 uniform vec2 uTexel;
 uniform float uTime;
 uniform float uWander; // always-on drift so smoke never freezes
+${MARK}
 void main() {
   vec2 vel = texture(uVelocity, vUv).xy;
   float dens = texture(uDensity, vUv).x;
@@ -242,6 +320,9 @@ void main() {
   vel.x += (uWindX * scaleX * 0.4 + wobX * uWander * scaleX) * dens * uDt * alive;
   vel.y += (uWindY * scaleY * 0.25 + wobY * uWander * scaleY) * dens * uDt * alive;
 
+  // The silhouette acts as a wall: motion dies just outside it.
+  if (uHasMask > 0.5) vel *= smoothstep(0.1, 0.55, mark(vUv));
+
   fragColor = vec4(vel, 0.0, 1.0);
 }
 `;
@@ -255,6 +336,7 @@ uniform vec2 uTexel;
 uniform vec3 uBg;
 uniform vec3 uSmokeStart;
 uniform vec3 uSmokeEnd;
+${MARK}
 void main() {
   vec2 t = uTexel * 1.25;
   float d = 0.0;
@@ -292,7 +374,94 @@ void main() {
   vec3 smoke = mix(fresh, cool, age * 0.92);
   smoke = mix(smoke, fresh * 1.04, core * (1.0 - age) * 0.18);
   float a = clamp(body * 0.66 + core * 0.18, 0.0, 0.82);
+  if (uHasMask > 0.5) {
+    float clip = smoothstep(0.22, 0.58, mark(vUv));
+    // Keep the silhouette crisp; the little that bleeds past it reads as glow.
+    a *= clip + (1.0 - clip) * 0.22;
+  }
   fragColor = vec4(mix(uBg, smoke, a), 1.0);
+}
+`;
+
+// Solid metal logo: density is surface height, velocity leans the normal.
+const DISPLAY_MERCURY = `#version 300 es
+precision highp float;
+in vec2 vUv;
+out vec4 fragColor;
+uniform sampler2D uDensity;
+uniform sampler2D uVelocity;
+uniform vec2 uTexel;
+uniform vec3 uBg;
+uniform vec3 uSmokeStart;
+uniform vec3 uSmokeEnd;
+uniform float uTime;
+${MARK}
+float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float noise(vec2 p){
+  vec2 i = floor(p), f = fract(p);
+  float a = hash(i), b = hash(i + vec2(1, 0));
+  float c = hash(i + vec2(0, 1)), d = hash(i + vec2(1, 1));
+  vec2 u = f * f * (3.0 - 2.0 * f);
+  return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+}
+void main() {
+  float cover = smoothstep(0.28, 0.58, mark(vUv));
+  float sd = markSdf(vUv);
+
+  vec2 t = uTexel * 1.35;
+  float h = 0.0;
+  h += texture(uDensity, vUv).x * 0.34;
+  h += texture(uDensity, vUv + vec2(t.x, 0.0)).x * 0.165;
+  h += texture(uDensity, vUv - vec2(t.x, 0.0)).x * 0.165;
+  h += texture(uDensity, vUv + vec2(0.0, t.y)).x * 0.165;
+  h += texture(uDensity, vUv - vec2(0.0, t.y)).x * 0.165;
+
+  float hx = texture(uDensity, vUv + vec2(t.x, 0.0)).x - texture(uDensity, vUv - vec2(t.x, 0.0)).x;
+  float hy = texture(uDensity, vUv + vec2(0.0, t.y)).x - texture(uDensity, vUv - vec2(0.0, t.y)).x;
+  vec2 vel = texture(uVelocity, vUv).xy;
+  float speed = length(vel) * 0.0035;
+
+  vec3 Nliq = normalize(vec3(-(hx * 3.2 + vel.x * 0.00045), -(hy * 3.2 + vel.y * 0.00045), 0.78));
+
+  float thick = 0.0065;
+  float be = 0.0022;
+  vec2 g = vec2(markSdf(vUv + vec2(be, 0.0)) - markSdf(vUv - vec2(be, 0.0)),
+                markSdf(vUv + vec2(0.0, be)) - markSdf(vUv - vec2(0.0, be)));
+  float gm = length(g);
+  vec2 bdir = gm > 1e-5 ? g / gm : vec2(0.0, 1.0);
+  float rim = 1.0 - smoothstep(0.0, thick, max(sd, 0.0));
+  rim *= rim;
+  vec3 Nrim = normalize(vec3(-bdir * rim * 0.4, sqrt(max(1.0 - rim * rim * 0.22, 0.25))));
+  vec3 N = normalize(mix(Nliq, Nrim, 0.3 * rim));
+
+  vec3 V = vec3(0.0, 0.0, 1.0);
+  vec3 L = normalize(vec3(0.35, 0.55, 0.75));
+  float fres = pow(1.0 - max(dot(N, V), 0.0), 2.2);
+
+  vec3 warm = vec3(1.0, 0.51, 0.45);
+  vec2 q = markUv(vUv) * 2.05 + vel.xy * 0.0003 + vec2(uTime * 0.035, -uTime * 0.028);
+  float swirl = noise(q) * 0.65 + noise(q * 1.7 + 3.1) * 0.35;
+  vec3 col = mix(uSmokeStart, uSmokeEnd, smoothstep(0.18, 0.88, swirl + h * 0.7));
+  col = mix(col, uSmokeEnd * 1.2, pow(smoothstep(0.45, 0.95, swirl), 1.5) * 0.4);
+  col = mix(col, warm, smoothstep(0.55, 0.12, swirl) * 0.28);
+  col = mix(col, vec3(0.92, 0.96, 1.0), pow(max(h, 0.0), 1.25) * 0.4);
+
+  vec3 R = reflect(-V, N);
+  float sky = smoothstep(-0.2, 0.9, R.y);
+  vec3 refl = mix(uSmokeStart * 0.7, uSmokeEnd * 1.1, sky);
+  refl = mix(refl, vec3(0.85, 0.92, 1.0), pow(max(R.y, 0.0), 4.0) * 0.65);
+  col = mix(col, refl, clamp(0.16 + 0.55 * fres, 0.0, 0.8));
+  col += mix(uSmokeEnd, vec3(0.8, 0.9, 1.0), 0.35) * rim * fres * 0.4;
+
+  float sp = pow(max(dot(N, normalize(L + V)), 0.0), 64.0);
+  col += vec3(0.95, 0.97, 1.0) * sp * (0.7 + speed * 0.55);
+  col += warm * pow(max(h, 0.0), 1.5) * sp * 0.22;
+  col *= 1.28;
+
+  float grain = noise(vUv * vec2(420.0, 380.0) + uTime * 2.0);
+  col *= 0.97 + 0.05 * grain;
+  vec3 bg = uBg * (0.96 + 0.08 * noise(vUv * 220.0));
+  fragColor = vec4(mix(bg, col, cover), 1.0);
 }
 `;
 
@@ -390,10 +559,25 @@ function createDouble(
   };
 }
 
-export function WebSmokeCanvas({ params, onError }: Props) {
+export function WebSmokeCanvas({
+  params,
+  onError,
+  mask,
+  maskScale,
+  ambient = false,
+  look = "smoke",
+}: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
   const paramsRef = useRef(params);
   paramsRef.current = params;
+  const maskRef = useRef(mask);
+  maskRef.current = mask;
+  const maskScaleRef = useRef(maskScale ?? 0.92);
+  maskScaleRef.current = maskScale ?? 0.92;
+  const ambientRef = useRef(ambient);
+  ambientRef.current = ambient;
+  const lookRef = useRef(look);
+  lookRef.current = look;
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -438,7 +622,9 @@ export function WebSmokeCanvas({ params, onError }: Props) {
         vorticity: link(gl, VERT, VORTICITY),
         clear: link(gl, VERT, CLEAR),
         gravity: link(gl, VERT, GRAVITY),
+        emit: link(gl, VERT, EMIT),
         display: link(gl, VERT, DISPLAY),
+        displayMercury: link(gl, VERT, DISPLAY_MERCURY),
       };
       buf = gl.createBuffer()!;
       gl.bindBuffer(gl.ARRAY_BUFFER, buf);
@@ -547,6 +733,34 @@ export function WebSmokeCanvas({ params, onError }: Props) {
     mount.addEventListener("pointerleave", onLeave);
     mount.addEventListener("pointerenter", onMove);
 
+    const maskTex = gl.createTexture()!;
+    gl.bindTexture(gl.TEXTURE_2D, maskTex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texImage2D(
+      gl.TEXTURE_2D,
+      0,
+      gl.RGBA,
+      1,
+      1,
+      0,
+      gl.RGBA,
+      gl.UNSIGNED_BYTE,
+      new Uint8Array([255, 255, 255, 0]),
+    );
+    let lastMask: TexImageSource | null | undefined;
+    const syncMask = () => {
+      const src = maskRef.current;
+      if (src === lastMask) return;
+      lastMask = src;
+      if (!src) return;
+      gl.bindTexture(gl.TEXTURE_2D, maskTex);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src);
+    };
+
     const locCache = new Map<WebGLProgram, Map<string, WebGLUniformLocation | null>>();
     const U = (prog: WebGLProgram, name: string) => {
       let m = locCache.get(prog);
@@ -556,6 +770,15 @@ export function WebSmokeCanvas({ params, onError }: Props) {
       }
       if (!m.has(name)) m.set(name, gl.getUniformLocation(prog, name));
       return m.get(name) ?? null;
+    };
+
+    const bindMark = (prog: WebGLProgram, unit: number) => {
+      gl.activeTexture(gl.TEXTURE0 + unit);
+      gl.bindTexture(gl.TEXTURE_2D, maskTex);
+      gl.uniform1i(U(prog, "uMask"), unit);
+      gl.uniform1f(U(prog, "uHasMask"), maskRef.current ? 1 : 0);
+      gl.uniform2f(U(prog, "uAspect"), canvas.width, canvas.height);
+      gl.uniform1f(U(prog, "uMaskScale"), maskScaleRef.current);
     };
 
     let raf = 0;
@@ -570,22 +793,46 @@ export function WebSmokeCanvas({ params, onError }: Props) {
       last = now;
       const p = paramsRef.current;
 
+      syncMask();
+      const hasMask = !!maskRef.current;
+      const ambientOn = ambientRef.current && !hasMask;
+      const mercury = lookRef.current === "mercury";
+
       const texel = [1 / simW, 1 / simH] as const;
       const velDiss = 0.97 + Math.max(0.05, Math.min(0.9, p.uInertia)) * 0.02;
       const fade = Math.max(0.05, Math.min(0.8, p.uFade));
-      const lifeSec = 30 - ((fade - 0.05) / 0.75) * 10;
+      // Inside a mark the field is refilled every frame, so it has to turn over
+      // in seconds — otherwise the logo saturates into a flat silhouette.
+      // Ambient underlays also turn over faster so the room never goes flat.
+      const lifeSec = hasMask
+        ? mercury
+          ? 2.2 + fade * 9
+          : 1.2 + fade * 7
+        : ambientOn
+          ? 4 + fade * 10
+          : 30 - ((fade - 0.05) / 0.75) * 10;
       const densDiss = Math.pow(0.03, 1 / Math.max(1, lifeSec * 60));
-      const heatLife = 10 + (1 - fade / 0.8) * 4;
+      const heatLife = hasMask
+        ? mercury
+          ? 1.2 + fade * 4
+          : 0.7 + fade * 3
+        : ambientOn
+          ? 2.5 + (1 - fade / 0.8) * 3
+          : 10 + (1 - fade / 0.8) * 4;
       const heatDiss = Math.pow(0.05, 1 / Math.max(1, heatLife * 60));
 
       const radius = Math.max(0.0002, p.uSpread * 0.00019);
-      const splatDens = Math.max(0.04, p.uDensity) * 0.054;
-      const forceScale = 28 + p.uSpeed * 6;
-      const curlForce = 8 + p.uSpeed * 4;
-      // Soft loft — no rocket acceleration under the cursor
-      const rise = (0.35 + p.uGravity * 0.55) * 0.55;
-      const fall = 0.2 + p.uGravity * 0.45;
-      const wander = 0.18 + p.uSpeed * 0.05;
+      const splatDens = Math.max(0.04, p.uDensity) * (mercury ? 0.07 : 0.054);
+      const forceScale = (28 + p.uSpeed * 6) * (mercury ? 1.15 : 1);
+      const curlForce = (8 + p.uSpeed * 4) * (mercury ? 0.85 : 1);
+      // Soft loft — mercury barely rises; smoke keeps the buoyant look.
+      const rise = mercury
+        ? (0.08 + p.uGravity * 0.2) * 0.35
+        : (0.35 + p.uGravity * 0.55) * 0.55;
+      const fall = mercury ? 0.08 + p.uGravity * 0.2 : 0.2 + p.uGravity * 0.45;
+      const wander = mercury
+        ? 0.06 + p.uSpeed * 0.02
+        : 0.18 + p.uSpeed * 0.05;
       const ang = (p.uDirection * Math.PI) / 180;
       const windX = Math.cos(ang) * p.uSpeed * 0.08;
       const windY = Math.sin(ang) * p.uSpeed * 0.08;
@@ -594,6 +841,24 @@ export function WebSmokeCanvas({ params, onError }: Props) {
       const dy = mouse.y - mouse.py;
       mouse.px = mouse.x;
       mouse.py = mouse.y;
+
+      // Mark emit (Smokey) or ambient full-frame emit (Logo Lab atmosphere).
+      // Without this, a pointer-events:none underlay stays empty forever.
+      if (hasMask || ambientOn) {
+        const emitScale = hasMask ? (mercury ? 0.028 : 0.055) : 0.038;
+        bindQuad(programs.emit);
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, density.read.tex);
+        gl.uniform1i(U(programs.emit, "uTarget"), 0);
+        gl.uniform1f(U(programs.emit, "uTime"), now * 0.001);
+        gl.uniform1f(
+          U(programs.emit, "uAmount"),
+          Math.max(0.04, p.uDensity) * emitScale * Math.min(dt * 60, 2),
+        );
+        bindMark(programs.emit, 2);
+        blit(density.write);
+        density.swap();
+      }
 
       if (mouse.has && mouse.ready) {
         const speed = Math.hypot(dx, dy);
@@ -636,16 +901,19 @@ export function WebSmokeCanvas({ params, onError }: Props) {
           velocity.swap();
         }
 
-        bindQuad(programs.splat);
-        gl.bindTexture(gl.TEXTURE_2D, density.read.tex);
-        gl.uniform1i(U(programs.splat, "uTarget"), 0);
-        gl.uniform2f(U(programs.splat, "uPoint"), mouse.x, mouse.y);
-        gl.uniform3f(U(programs.splat, "uColor"), densAmt, heatAmt, 0);
-        gl.uniform1f(U(programs.splat, "uRadius"), radius * 0.85);
-        gl.uniform2f(U(programs.splat, "uTexel"), texel[0], texel[1]);
-        gl.uniform1f(U(programs.splat, "uSoftCap"), 1);
-        blit(density.write);
-        density.swap();
+        if (!hasMask || mercury) {
+          bindQuad(programs.splat);
+          gl.activeTexture(gl.TEXTURE0);
+          gl.bindTexture(gl.TEXTURE_2D, density.read.tex);
+          gl.uniform1i(U(programs.splat, "uTarget"), 0);
+          gl.uniform2f(U(programs.splat, "uPoint"), mouse.x, mouse.y);
+          gl.uniform3f(U(programs.splat, "uColor"), densAmt, heatAmt, 0);
+          gl.uniform1f(U(programs.splat, "uRadius"), radius * (mercury ? 1.0 : 0.85));
+          gl.uniform2f(U(programs.splat, "uTexel"), texel[0], texel[1]);
+          gl.uniform1f(U(programs.splat, "uSoftCap"), 1);
+          blit(density.write);
+          density.swap();
+        }
       } else {
         mouse.coastX *= 0.92;
         mouse.coastY *= 0.85;
@@ -688,6 +956,7 @@ export function WebSmokeCanvas({ params, onError }: Props) {
       gl.uniform2f(U(programs.gravity, "uTexel"), texel[0], texel[1]);
       gl.uniform1f(U(programs.gravity, "uTime"), now * 0.001);
       gl.uniform1f(U(programs.gravity, "uWander"), wander);
+      bindMark(programs.gravity, 2);
       blit(velocity.write);
       velocity.swap();
 
@@ -763,6 +1032,7 @@ export function WebSmokeCanvas({ params, onError }: Props) {
         U(programs.advectDensity, "uHeatDiss"),
         Math.pow(heatDiss, dt * 60),
       );
+      bindMark(programs.advectDensity, 2);
       blit(density.write);
       density.swap();
 
@@ -770,14 +1040,22 @@ export function WebSmokeCanvas({ params, onError }: Props) {
       const bg = hexToRgb(p.uBg);
       const ca = hexToRgb(p.uColorA);
       const cb = hexToRgb(p.uColorB);
-      bindQuad(programs.display);
+      const displayProg = mercury ? programs.displayMercury : programs.display;
+      bindQuad(displayProg);
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, density.read.tex);
-      gl.uniform1i(U(programs.display, "uDensity"), 0);
-      gl.uniform2f(U(programs.display, "uTexel"), texel[0], texel[1]);
-      gl.uniform3f(U(programs.display, "uBg"), bg[0], bg[1], bg[2]);
-      gl.uniform3f(U(programs.display, "uSmokeStart"), ca[0], ca[1], ca[2]);
-      gl.uniform3f(U(programs.display, "uSmokeEnd"), cb[0], cb[1], cb[2]);
+      gl.uniform1i(U(displayProg, "uDensity"), 0);
+      if (mercury) {
+        gl.activeTexture(gl.TEXTURE1);
+        gl.bindTexture(gl.TEXTURE_2D, velocity.read.tex);
+        gl.uniform1i(U(displayProg, "uVelocity"), 1);
+        gl.uniform1f(U(displayProg, "uTime"), now * 0.001);
+      }
+      gl.uniform2f(U(displayProg, "uTexel"), texel[0], texel[1]);
+      gl.uniform3f(U(displayProg, "uBg"), bg[0], bg[1], bg[2]);
+      gl.uniform3f(U(displayProg, "uSmokeStart"), ca[0], ca[1], ca[2]);
+      gl.uniform3f(U(displayProg, "uSmokeEnd"), cb[0], cb[1], cb[2]);
+      bindMark(displayProg, 2);
       blit(null);
     };
     tick();
@@ -800,6 +1078,7 @@ export function WebSmokeCanvas({ params, onError }: Props) {
         gl.deleteTexture(curl.tex);
         gl.deleteFramebuffer(curl.fbo);
       }
+      gl.deleteTexture(maskTex);
       gl.deleteBuffer(buf);
       for (const prog of Object.values(programs)) gl.deleteProgram(prog);
       if (canvas.parentElement === mount) mount.removeChild(canvas);

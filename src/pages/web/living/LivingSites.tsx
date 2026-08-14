@@ -7,7 +7,10 @@ import {
 } from "react";
 import { GreenBasketSite } from "./GreenBasketSite";
 import { KilnAtelierSite } from "./KilnAtelierSite";
+import { MochalkiSite } from "./MochalkiSite";
 import { NordPulseSite } from "./NordPulseSite";
+import { ShikhovoSite } from "./ShikhovoSite";
+import { VesperSite } from "./VesperSite";
 import { photos } from "./photos";
 
 export type LivingMode = "full" | "thumb";
@@ -2824,6 +2827,9 @@ const SITES: Record<
   "vault-access": (p) => <VaultSite {...p} />,
   nordpulse: (p) => <NordPulseSite {...p} />,
   greenbasket: (p) => <GreenBasketSite {...p} />,
+  mochalki: (p) => <MochalkiSite {...p} />,
+  vesper: (p) => <VesperSite {...p} />,
+  shikhovo: (p) => <ShikhovoSite {...p} />,
 };
 
 export function LivingSite({

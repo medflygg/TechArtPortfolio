@@ -126,7 +126,7 @@ const COPY = {
     trust1: "Same-day slots",
     trust2: "40+ local farms",
     trust3: "Carbon-neutral",
-    footer: "© GreenBasket — portfolio case",
+    footer: "© GreenBasket",
     emptyCart: "Your basket is empty",
     continueShopping: "Browse catalog",
     qty: "Qty",
@@ -172,7 +172,7 @@ const COPY = {
     trust1: "Доставка в день заказа",
     trust2: "40+ местных ферм",
     trust3: "Нейтральный углерод",
-    footer: "© GreenBasket — portfolio case",
+    footer: "© GreenBasket",
     emptyCart: "Корзина пуста",
     continueShopping: "В каталог",
     qty: "Кол-во",
@@ -1219,8 +1219,6 @@ export function GreenBasketSite({
           </div>
         )}
       </div>
-
-      <footer className="gb-footer">{t.footer}</footer>
     </Shell>
   );
 }

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { RainForestControls } from "../components/RainForestControls";
 import { useI18n } from "../i18n/I18nProvider";
 import { FullscreenShaderCanvas } from "../lab/FullscreenShaderCanvas";
@@ -139,6 +140,9 @@ export function ShadersPage() {
 
   return (
     <main className="page page--dark">
+      <p className="wc-back">
+        <Link to="/work/ta">{t.shadersLab.back}</Link>
+      </p>
       <header className="section-head">
         <p className="section-kicker">{t.shadersLab.kicker}</p>
         <h1>{t.shadersLab.title}</h1>

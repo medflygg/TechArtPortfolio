@@ -7,7 +7,7 @@ export function CasePage() {
 
   return (
     <main className="page page--dark">
-      <p style={{ margin: "18px 0 0" }}>
+      <p className="wc-back">
         <Link to="/work/ta">{c.back}</Link>
       </p>
       <section className="case-hero">

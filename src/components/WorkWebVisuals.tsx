@@ -1,5 +1,6 @@
 import { type CSSProperties, type ReactNode } from "react";
-import { publicUrl } from "../lib/publicUrl";
+import { kilnArtPhotos } from "../pages/web/living/kilnArtPhotos";
+import { mochalkiPhotos } from "../pages/web/living/mochalkiPhotos";
 
 type VisualProps = {
   title: string;
@@ -107,22 +108,20 @@ export function HoloUiVisual({ title }: VisualProps) {
 export function LaunchSitesVisual({ title }: VisualProps) {
   const tiles = [
     {
-      src: publicUrl("portfolio/mochalki/01-home.png"),
+      src: null,
+      tone: "vesper" as const,
+      label: "Cabaret",
+      url: "vesper.house",
+    },
+    {
+      src: mochalkiPhotos.hero,
+      tone: "photo" as const,
       label: "Shop",
-      url: "mochalki.shop",
+      url: "supracor.shop",
     },
     {
-      src: publicUrl("portfolio/saitik/01-home.png"),
-      label: "YY",
-      url: "yy.studio",
-    },
-    {
-      src: publicUrl("portfolio/grocery/hero.jpg"),
-      label: "Grocery",
-      url: "greenbasket.shop",
-    },
-    {
-      src: publicUrl("portfolio/kiln/art/vessel.png"),
+      src: kilnArtPhotos.forge,
+      tone: "photo" as const,
       label: "Atelier",
       url: "kiln.atelier",
     },
@@ -134,7 +133,7 @@ export function LaunchSitesVisual({ title }: VisualProps) {
         <div className="mock-sites__head">
           <span className="mock-sites__kicker">Multi-page · live</span>
           <strong>{title}</strong>
-          <em>Ecommerce · CRM · Portfolio · Atelier</em>
+          <em>Cabaret · Ecommerce · Atelier</em>
         </div>
         <div className="mock-sites__grid">
           {tiles.map((tile, i) => (
@@ -150,8 +149,8 @@ export function LaunchSitesVisual({ title }: VisualProps) {
                 </span>
                 <em>{tile.url}</em>
               </div>
-              <div className="mock-sites__shot">
-                <img src={tile.src} alt="" loading="lazy" />
+              <div className={`mock-sites__shot${tile.tone === "vesper" ? " mock-sites__shot--vesper" : ""}`}>
+                {tile.src ? <img src={tile.src} alt="" loading="lazy" /> : <span>VESPER</span>}
               </div>
               <span className="mock-sites__tag">{tile.label}</span>
             </article>

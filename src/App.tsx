@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Nav } from "./components/Nav";
+import { ScrollToTop } from "./components/ScrollToTop";
 import { CasePage } from "./pages/CasePage";
 import { ContactPage } from "./pages/ContactPage";
 import { HomePage } from "./pages/HomePage";
@@ -14,6 +15,7 @@ import "./App.css";
 export default function App() {
   return (
     <div className="app-shell">
+      <ScrollToTop />
       <Nav />
       <Routes>
         <Route path="/" element={<HomePage />} />

@@ -19,7 +19,7 @@ export const webCategories: {
   { id: "holo", visual: "holo-ui" },
 ];
 
-/** Full websites order: shops → YY → Kiln (#3) → grocery → NordPulse last */
+/** Full websites order: Vesper → Kiln → Supracor → Shikhovo → … → NordPulse last */
 export const webCases: WebCaseMeta[] = [
   {
     id: "aurora-flute",
@@ -40,18 +40,10 @@ export const webCases: WebCaseMeta[] = [
     kind: "living",
   },
   {
-    id: "mochalki",
+    id: "vesper",
     category: "launch",
-    accent: "#c4a574",
-    kind: "carousel",
-    portfolioId: "mochalki",
-  },
-  {
-    id: "yy-portfolio",
-    category: "launch",
-    accent: "#111111",
-    kind: "carousel",
-    portfolioId: "yy-portfolio",
+    accent: "#c9a36a",
+    kind: "living",
   },
   {
     id: "kiln-site",
@@ -59,6 +51,25 @@ export const webCases: WebCaseMeta[] = [
     accent: "#e8c07a",
     kind: "living",
     livingId: "kiln-identity",
+  },
+  {
+    id: "mochalki",
+    category: "launch",
+    accent: "#b8955a",
+    kind: "living",
+  },
+  {
+    id: "shikhovo",
+    category: "launch",
+    accent: "#2f9e6b",
+    kind: "living",
+  },
+  {
+    id: "yy-portfolio",
+    category: "launch",
+    accent: "#111111",
+    kind: "carousel",
+    portfolioId: "yy-portfolio",
   },
   {
     id: "greenbasket",

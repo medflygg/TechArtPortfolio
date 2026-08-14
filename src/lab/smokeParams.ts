@@ -14,7 +14,7 @@ export type SmokeParams = {
 };
 
 /** Bump when sim behavior changes so Home remounts the live canvas. */
-export const SMOKE_SIM_REVISION = 8;
+export const SMOKE_SIM_REVISION = 10;
 
 export const defaultSmokeParams: SmokeParams = {
   uSpeed: 1.5,

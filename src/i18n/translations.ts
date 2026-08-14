@@ -5,45 +5,81 @@ export const translations = {
     meta: {
       title: "ATLAS — Nikita Korolkov · Web Design & Tech Art",
       description:
-        "Nikita Korolkov — high-craft web design, product interfaces, and procedural shader surfaces. Also Standalone VR Tech Art.",
+        "Nikita Korolkov — high-craft websites, product UI, procedural surfaces, Unreal Tech Art. Deploy, domain, Cloudflare, ongoing support.",
     },
     nav: {
-      ta: "TA",
-      web: "Web",
+      ta: "Tech Art",
+      web: "Work",
+      work: "Work",
       shaders: "Shaders",
       studio: "Studio",
       portfolio: "Portfolio",
       contact: "Contact",
+      backHome: "← Home",
     },
     home: {
-      kicker: "Web Design · Shaders · Tech Art",
+      kicker: "Nikita Korolkov · Web design & Tech Art",
       lead:
-        "I craft web experiences where motion, type, and GPU effects feel inevitable — with Standalone VR systems that still hold 72 FPS.",
-      ctaWeb: "Full websites",
-      ctaStudio: "Shader studio →",
-      ctaTa: "VR / Tech Art",
-      lane1Tag: "01 · Web",
-      lane1Title: "Full sites & systems",
-      lane1Body:
-        "Ecommerce, CRM, atelier, personal portfolios — interactive multi-page cases with real imagery, not empty launch shells.",
-      lane1Go: "Open websites",
-      lane2Tag: "02 · Studio",
-      lane2Title: "Shader studio",
-      lane2Body:
-        "Smoke, liquid, holo, fluted glass — tweak live backgrounds and export production-ready GLSL / React.",
-      lane2Go: "Open studio",
-      lane3Tag: "03 · TA",
-      lane3Title: "Realtime VR systems",
-      lane3Body:
-        "Mass NPC, scopes, fake lights, LBE tooling — Mobile Forward work measured in frame time, not moodboards.",
-      lane3Go: "View TA work",
+        "I design and build high-craft websites — shops, product UI, and live interfaces with motion and GPU surfaces that feel intentional.",
+      leadSecondary:
+        "Also Unreal Engine Tech Art — render systems, shaders, and tooling (often under VR constraints).",
+      leadOps:
+        "I ship sites to production too — hosting, domain, Cloudflare, and ongoing support after launch.",
+      ctaWork: "View work",
+      ctaContact: "Get in touch",
+      ctaTa: "Unreal Tech Art →",
+      proofKicker: "Selected work",
+      proofTitle: "Proof, not slides",
+      proofLead:
+        "Interactive cases you can click through — plus a live shader lab for procedural surfaces.",
+      proofAll: "All web work →",
+      closeTitle: "Need a site that looks right — and stays online?",
+      closeLead:
+        "Design, build, deploy, domain, Cloudflare, support. Short brief — I reply in Telegram.",
+      closeCta: "Message on Telegram",
+      featured: {
+        mochalki: {
+          tag: "Ecommerce",
+          title: "Supracor",
+          body: "Full shop flow — catalog, product, cart, checkout.",
+        },
+        vesper: {
+          tag: "Private house",
+          title: "Vesper",
+          body: "Members' cabaret — invitation, tonight's house, live table book.",
+        },
+        shikhovo: {
+          tag: "Estate site",
+          title: "Shikhovo",
+          body: "Light family eco-farm — map, animals, tickets, cottages.",
+        },
+        kiln: {
+          tag: "Atelier site",
+          title: "Kiln",
+          body: "Copper sculpture brand — heat, craft, multi-page living UI.",
+        },
+        studio: {
+          tag: "Shader lab",
+          title: "Procedural studio",
+          body: "Live WebGL surfaces — tune, preview, export for production.",
+        },
+      },
     },
     workWeb: {
       kicker: "Selected work · Web",
-      title: "Digital craft",
+      title: "Web work",
       lead:
-        "Interactive product surfaces and full multi-page websites — each with its own audience and visual language.",
+        "Full multi-page websites and interactive product surfaces — each built as a case you can explore.",
       back: "← Web work",
+      caseRole: "Portfolio case · design & interactive prototype",
+      caseHintCarousel:
+        "Browse screens — a multi-page case from a real design file.",
+      caseHintLiving:
+        "Click sections inside the mock — multiple pages and live interaction.",
+      caseCtaTitle: "Want something in this lane?",
+      caseCtaBody:
+        "Shops, ateliers, dashboards, procedural surfaces — plus deploy, domain, Cloudflare and support. Write me.",
+      caseCta: "Contact",
       studio: {
         title: "Procedural shader studio",
         tags: "WebGL · Export · Live lab",
@@ -58,7 +94,7 @@ export const translations = {
         launch: {
           title: "Full websites",
           tags: "Shops · CRM · Multi-page",
-          lead: "Complete site cases — ecommerce with cart, CRM dashboards, personal portfolios, atelier storefronts.",
+          lead: "Complete site cases — private houses, ecommerce with cart, CRM dashboards, ateliers.",
           back: "← Full websites",
         },
       },
@@ -88,8 +124,16 @@ export const translations = {
           tags: "Copper atelier · Brand · 2024",
         },
         mochalki: {
-          title: "Mochalki — Supracor",
+          title: "Supracor",
           tags: "Ecommerce · Cart · Checkout",
+        },
+        vesper: {
+          title: "Vesper",
+          tags: "Private cabaret · Members · Live UI",
+        },
+        shikhovo: {
+          title: "Shikhovo",
+          tags: "Family farm · Map · Tickets · RU",
         },
         "yy-portfolio": {
           title: "YY Portfolio",
@@ -118,9 +162,21 @@ export const translations = {
       cases: {
         mochalki: {
           audience: "Ecommerce · bath & body",
-          title: "Mochalki — Supracor",
-          tags: "Catalog · Cart · Checkout · 5 screens",
+          title: "Supracor",
+          tags: "Catalog · Cart · Checkout · Live",
           lead: "Warm retail storefront with catalog, product page, cart and checkout flow.",
+        },
+        vesper: {
+          audience: "Private members' cabaret",
+          title: "Vesper",
+          tags: "Invitation · Programme · Tables · Live",
+          lead: "A closed house in Paris — tonight's programme, a live floor, names in the book.",
+        },
+        shikhovo: {
+          audience: "Family eco-farm",
+          title: "Shikhovo",
+          tags: "Map · Animals · Tickets · Cottages",
+          lead: "Bright Russian family site — territory map, real park photos, simple ticket day planner.",
         },
         "yy-portfolio": {
           audience: "Personal portfolio",
@@ -150,9 +206,13 @@ export const translations = {
     },
     workTa: {
       kicker: "Selected work · Tech Art",
-      title: "VR systems",
+      title: "Unreal Tech Art",
       lead:
-        "Standalone / Mobile Forward — render budgets, shader lighting, and tooling that survive venue load.",
+        "UE systems work — render budgets, shader lighting, pipelines and tools. Much of it shipped under Standalone VR constraints.",
+      lab: {
+        title: "Shader lab",
+        tags: "Fullscreen · Materials · Live GLSL",
+      },
       projects: {
         "mass-npc": {
           title: "Mass NPC render system",
@@ -167,7 +227,7 @@ export const translations = {
           tags: "Mobile Forward · Toon",
         },
         "lbe-pipeline": {
-          title: "LBE VR pipeline & tools",
+          title: "LBE pipeline & tools",
           tags: "EUW · Python · CI/CD",
         },
       },
@@ -191,33 +251,38 @@ export const translations = {
     contact: {
       kicker: "Contact",
       name: "Nikita Korolkov",
-      role: "Web Designer · Tech Artist",
-      title: "Build the frame.\nOwn the surface.",
+      role: "Web designer · Tech artist",
+      title: "Let’s talk about your project",
       lead:
-        "Open for high-craft web and Standalone VR Tech Art — from product interfaces to procedural brand surfaces and render systems.",
+        "Open for websites, product UI, procedural surfaces, Unreal Tech Art — and production launch: hosting, domain, Cloudflare, support. Fastest reply — Telegram.",
+      back: "← Home",
       emailLabel: "Email",
       email: "corolkovnikita@gmail.com",
       telegramLabel: "Telegram",
       telegram: "@sprtbx",
       telegramUrl: "https://t.me/sprtbx",
-      ctaStudio: "Web shader studio",
-      ctaShaders: "TA shaders →",
+      ctaTelegram: "Message on Telegram",
+      ctaEmail: "Write an email",
       caps: {
         "01": {
-          title: "Web product design",
-          body: "Systems, motion, and GPU backgrounds that feel ownable.",
+          title: "Websites & product UI",
+          body: "Shops, landing systems, dashboards — clear structure, strong craft, real interaction.",
         },
         "02": {
-          title: "Procedural surfaces",
-          body: "Shader studio, holo / fluted UI, export-ready GLSL and React.",
+          title: "Motion & GPU surfaces",
+          body: "Shader backgrounds, holo / fluted UI, export-ready GLSL and React.",
         },
         "03": {
-          title: "VR Tech Art",
-          body: "Mass NPC, BasePass, scopes, Multiview, Mobile Forward lock.",
+          title: "Unreal Tech Art",
+          body: "Render systems, shaders, pipelines — including hard VR / Mobile Forward budgets when needed.",
         },
         "04": {
-          title: "Ship & scale",
-          body: "CI/CD, UE5 migrations, −50% build size, production exports.",
+          title: "Deploy & support",
+          body: "Hosting, domain, Cloudflare, SSL, handoff — and ongoing care after the site is live.",
+        },
+        "05": {
+          title: "How we start",
+          body: "Short brief in Telegram → scope & timeline → design / prototype / launch.",
         },
       },
     },
@@ -225,12 +290,22 @@ export const translations = {
       kicker: "Web · procedural FX",
       title: "Shader studio",
       lead:
-        "Abstract surfaces with color controls — interactive or ambient. Blockify / Pixels / Fluted can use a local image.",
+        "Two rooms: full-bleed backgrounds, and a logo lab — SVG in Static Noise, Mercury, Gem, Fluid Chrome, Neon or smoke.",
+      back: "← Web work",
+      rooms: "Studio rooms",
+      roomBg: "Backgrounds",
+      roomLogo: "Logo lab",
       exportCode: "Export code",
       copied: "Copied",
       image: "Image",
       imageNote:
         "Optional local texture for Blockify / Pixels / Fluted. Stays in the browser — never uploaded.",
+      svg: "Logo SVG",
+      svgNote:
+        "Local SVG only — rasterized in the browser, never uploaded. Default mark is ATLAS.",
+      chooseSvg: "Choose SVG",
+      replaceSvg: "Replace SVG",
+      useDefault: "ATLAS mark",
       chooseImage: "Choose image",
       replaceImage: "Replace image",
       clear: "Clear",
@@ -240,62 +315,111 @@ export const translations = {
       exportReact: "Export · React",
       hintSmoke: "Drag to aim — when you stop, it keeps drifting that way",
       hintInteractive: "Soft cursor influence — no hard warp",
+      hintLogo: "Hover the mark — effects react to the cursor",
+      hintStatic: "Magnet clump · lag tail · gravity lean · fly home",
+      logoHints: {
+        "static-noise": "Magnet clump · lag tail · gravity lean · fly home",
+        mercury: "Liquid metal sim · drag to stir, keeps flowing",
+        gem: "Crystal facets · orbiting light · soft edge glow",
+        "fluid-chrome": "Molten chrome inside the mark · stir with cursor",
+        smokey: "Fluid smoke trapped in the silhouette · drag to stir",
+        neon: "Iridescent neon tube · soft bloom · flicker",
+      },
       hintImageOn: "Local image",
       hintImageOff: "Optional local image (never uploaded)",
       hintAmbient: "Ambient animation",
       errImageType: "Pick an image file (png / jpg / webp)",
       errImageRead: "Could not read image",
+      errSvgType: "Pick an SVG file",
+      errSvgRead: "Could not read SVG",
     },
     shadersLab: {
       kicker: "Lab · Tech Art",
       title: "Shader lab",
       lead:
         "Fullscreen multipass and material previews — Rain Forest, clouds, fake lights. Edit GLSL live.",
+      back: "← Tech Art",
     },
   },
   ru: {
     meta: {
       title: "ATLAS — Никита Корольков · Web Design & Tech Art",
       description:
-        "Никита Корольков — веб высокого крафта, продуктовые интерфейсы и procedural shader-поверхности. Также Standalone VR Tech Art.",
+        "Никита Корольков — сайты высокого крафта, product UI, procedural-поверхности, Tech Art на Unreal. Деплой, домен, Cloudflare, поддержка.",
     },
     nav: {
-      ta: "TA",
-      web: "Web",
+      ta: "Tech Art",
+      web: "Работы",
+      work: "Работы",
       shaders: "Шейдеры",
       studio: "Студия",
       portfolio: "Портфолио",
       contact: "Контакты",
+      backHome: "← Главная",
     },
     home: {
-      kicker: "Веб-дизайн · Шейдеры · Tech Art",
+      kicker: "Никита Корольков · Веб-дизайн и Tech Art",
       lead:
-        "Делаю веб, где движение, типографика и GPU-эффекты ощущаются неизбежными — и Standalone VR-системы, которые держат 72 FPS.",
-      ctaWeb: "Полноценные сайты",
-      ctaStudio: "Шейдер-студия →",
-      ctaTa: "VR / Tech Art",
-      lane1Tag: "01 · Web",
-      lane1Title: "Полноценные сайты и системы",
-      lane1Body:
-        "Ecommerce, CRM, ателье, личные портфолио — интерактивные многостраничники с реальными фото, не пустые launch-оболочки.",
-      lane1Go: "Открыть сайты",
-      lane2Tag: "02 · Студия",
-      lane2Title: "Шейдер-студия",
-      lane2Body:
-        "Smoke, liquid, holo, fluted glass — настраивайте live-фоны и экспортируйте готовый GLSL / React.",
-      lane2Go: "Открыть студию",
-      lane3Tag: "03 · TA",
-      lane3Title: "Realtime VR-системы",
-      lane3Body:
-        "Mass NPC, прицелы, fake lights, LBE-тулинг — Mobile Forward, где мера — frame time, а не мудборды.",
-      lane3Go: "Смотреть TA",
+        "Делаю сайты высокого крафта — магазины, product UI и живые интерфейсы с motion и GPU-поверхностями, которые выглядят намеренно.",
+      leadSecondary:
+        "Также Tech Art на Unreal Engine — render-системы, шейдеры и тулинг (часто в VR-ограничениях).",
+      leadOps:
+        "Выкладываю сайты в прод — хостинг, домен, Cloudflare и сопровождение после запуска.",
+      ctaWork: "Смотреть работы",
+      ctaContact: "Написать",
+      ctaTa: "Unreal Tech Art →",
+      proofKicker: "Избранное",
+      proofTitle: "Доказательства, не слайды",
+      proofLead:
+        "Интерактивные кейсы, которые можно полистать — и живая шейдер-лаборатория для procedural-поверхностей.",
+      proofAll: "Все web-работы →",
+      closeTitle: "Нужен сайт, который выглядит сильно — и живёт в проде?",
+      closeLead:
+        "Дизайн, сборка, деплой, домен, Cloudflare, поддержка. Краткий бриф — отвечаю в Telegram.",
+      closeCta: "Написать в Telegram",
+      featured: {
+        mochalki: {
+          tag: "Ecommerce",
+          title: "Supracor",
+          body: "Полный shop-flow — каталог, карточка, корзина, checkout.",
+        },
+        vesper: {
+          tag: "Закрытый дом",
+          title: "Vesper",
+          body: "Кабаре по приглашению — книга, программа ночи, живые столы.",
+        },
+        shikhovo: {
+          tag: "Усадьба",
+          title: "Шихово",
+          body: "Светлая семейная зооферма — карта, животные, билеты, домики.",
+        },
+        kiln: {
+          tag: "Ателье",
+          title: "Kiln",
+          body: "Бренд медной скульптуры — жар, крафт, многостраничный live UI.",
+        },
+        studio: {
+          tag: "Шейдер-лаб",
+          title: "Procedural studio",
+          body: "Живые WebGL-поверхности — настройка, превью, экспорт в прод.",
+        },
+      },
     },
     workWeb: {
       kicker: "Избранные работы · Web",
-      title: "Digital craft",
+      title: "Web-работы",
       lead:
-        "Интерактивные product-поверхности и полноценные многостраничные сайты — у каждого своя ЦА и визуальный язык.",
+        "Полноценные многостраничные сайты и интерактивные product-поверхности — каждый кейс можно пройти руками.",
       back: "← Работы Web",
+      caseRole: "Портфолио-кейс · дизайн и интерактивный прототип",
+      caseHintCarousel:
+        "Листайте экраны — многостраничный кейс из реального макета.",
+      caseHintLiving:
+        "Кликайте разделы внутри макета — несколько страниц и живой интерактив.",
+      caseCtaTitle: "Нужно что-то в этом духе?",
+      caseCtaBody:
+        "Магазины, ателье, дашборды, procedural-поверхности — плюс деплой, домен, Cloudflare и поддержка. Напишите.",
+      caseCta: "Связаться",
       studio: {
         title: "Procedural shader studio",
         tags: "WebGL · Экспорт · Live lab",
@@ -310,7 +434,7 @@ export const translations = {
         launch: {
           title: "Полноценные сайты",
           tags: "Магазины · CRM · Многостраничники",
-          lead: "Цельные кейсы — ecommerce с корзиной, CRM-дашборды, личные портфолио, ателье.",
+          lead: "Цельные кейсы — закрытые дома, ecommerce с корзиной, CRM-дашборды, ателье.",
           back: "← Полноценные сайты",
         },
       },
@@ -340,8 +464,16 @@ export const translations = {
           tags: "Медное ателье · Brand · 2024",
         },
         mochalki: {
-          title: "Mochalki — Supracor",
+          title: "Supracor",
           tags: "Ecommerce · Корзина · Checkout",
+        },
+        vesper: {
+          title: "Vesper",
+          tags: "Закрытый кабаре · Члены · Live UI",
+        },
+        shikhovo: {
+          title: "Шихово",
+          tags: "Семейная ферма · Карта · Билеты · RU",
         },
         "yy-portfolio": {
           title: "YY Portfolio",
@@ -370,9 +502,21 @@ export const translations = {
       cases: {
         mochalki: {
           audience: "Ecommerce · уход",
-          title: "Mochalki — Supracor",
-          tags: "Каталог · Корзина · Checkout · 5 экранов",
+          title: "Supracor",
+          tags: "Каталог · Корзина · Checkout · Live",
           lead: "Тёплый retail-магазин: каталог, карточка товара, корзина и оформление заказа.",
+        },
+        vesper: {
+          audience: "Закрытый кабаре",
+          title: "Vesper",
+          tags: "Приглашение · Программа · Столы · Live",
+          lead: "Закрытый дом в Париже — программа ночи, живой зал, имена в книге.",
+        },
+        shikhovo: {
+          audience: "Семейная зооферма",
+          title: "Шихово",
+          tags: "Карта · Животные · Билеты · Домики",
+          lead: "Светлый семейный сайт на русском — карта территории, фото с парка, простой сбор дня.",
         },
         "yy-portfolio": {
           audience: "Личное портфолио",
@@ -402,9 +546,13 @@ export const translations = {
     },
     workTa: {
       kicker: "Избранные работы · Tech Art",
-      title: "VR-системы",
+      title: "Unreal Tech Art",
       lead:
-        "Standalone / Mobile Forward — render budgets, шейдерный свет и тулинг, которые выдерживают venue load.",
+        "Системная работа в UE — render budgets, шейдерный свет, пайплайны и тулинг. Многое из этого шло в условиях Standalone VR.",
+      lab: {
+        title: "Шейдер-лаб",
+        tags: "Fullscreen · Материалы · Live GLSL",
+      },
       projects: {
         "mass-npc": {
           title: "Mass NPC render system",
@@ -419,7 +567,7 @@ export const translations = {
           tags: "Mobile Forward · Toon",
         },
         "lbe-pipeline": {
-          title: "LBE VR pipeline & tools",
+          title: "LBE pipeline & tools",
           tags: "EUW · Python · CI/CD",
         },
       },
@@ -444,32 +592,37 @@ export const translations = {
       kicker: "Контакты",
       name: "Никита Корольков",
       role: "Веб-дизайнер · Tech Artist",
-      title: "Собери кадр.\nВладей поверхностью.",
+      title: "Давайте обсудим ваш проект",
       lead:
-        "Открыт к high-craft web и Standalone VR Tech Art — от продуктовых интерфейсов до procedural brand-поверхностей и render-систем.",
+        "Открыт к сайтам, product UI, procedural-поверхностям, Tech Art на Unreal — и к запуску в прод: хостинг, домен, Cloudflare, поддержка. Быстрее всего отвечаю в Telegram.",
+      back: "← Главная",
       emailLabel: "Почта",
       email: "corolkovnikita@gmail.com",
       telegramLabel: "Telegram",
       telegram: "@sprtbx",
       telegramUrl: "https://t.me/sprtbx",
-      ctaStudio: "Web shader studio",
-      ctaShaders: "TA шейдеры →",
+      ctaTelegram: "Написать в Telegram",
+      ctaEmail: "Написать на почту",
       caps: {
         "01": {
-          title: "Веб product design",
-          body: "Системы, motion и GPU-фоны, которые ощущаются своими.",
+          title: "Сайты и product UI",
+          body: "Магазины, системы лендингов, дашборды — ясная структура, сильный крафт, живой интерактив.",
         },
         "02": {
-          title: "Procedural-поверхности",
-          body: "Шейдер-студия, holo / fluted UI, экспорт GLSL и React.",
+          title: "Motion и GPU-поверхности",
+          body: "Шейдер-фоны, holo / fluted UI, экспорт готового GLSL и React.",
         },
         "03": {
-          title: "VR Tech Art",
-          body: "Mass NPC, BasePass, прицелы, Multiview, Mobile Forward lock.",
+          title: "Unreal Tech Art",
+          body: "Render-системы, шейдеры, пайплайны — в том числе жёсткие VR / Mobile Forward бюджеты, когда нужно.",
         },
         "04": {
-          title: "Ship & scale",
-          body: "CI/CD, миграции UE5, −50% размера билда, production-экспорт.",
+          title: "Деплой и поддержка",
+          body: "Хостинг, домен, Cloudflare, SSL, передача — и сопровождение, когда сайт уже в проде.",
+        },
+        "05": {
+          title: "Как начинаем",
+          body: "Короткий бриф в Telegram → объём и сроки → дизайн / прототип / запуск.",
         },
       },
     },
@@ -477,12 +630,22 @@ export const translations = {
       kicker: "Web · procedural FX",
       title: "Шейдер-студия",
       lead:
-        "Абстрактные поверхности с контролем цвета — interactive или ambient. Blockify / Pixels / Fluted могут брать локальное изображение.",
+        "Две комнаты: фоны на весь кадр и лаборатория лого — SVG в Static Noise, Mercury, Gem, Fluid Chrome, Neon или дыме.",
+      back: "← Работы Web",
+      rooms: "Комнаты студии",
+      roomBg: "Фоны",
+      roomLogo: "Лого",
       exportCode: "Экспорт кода",
       copied: "Скопировано",
       image: "Изображение",
       imageNote:
         "Опциональная локальная текстура для Blockify / Pixels / Fluted. Остаётся в браузере — никуда не загружается.",
+      svg: "Лого SVG",
+      svgNote:
+        "Только локальный SVG — растрируется в браузере, никуда не уходит. По умолчанию — знак ATLAS.",
+      chooseSvg: "Выбрать SVG",
+      replaceSvg: "Заменить SVG",
+      useDefault: "Знак ATLAS",
       chooseImage: "Выбрать файл",
       replaceImage: "Заменить файл",
       clear: "Очистить",
@@ -492,17 +655,30 @@ export const translations = {
       exportReact: "Экспорт · React",
       hintSmoke: "Тяните, чтобы задать направление — после остановки дым продолжает дрейф",
       hintInteractive: "Мягкое влияние курсора — без жёсткого варпа",
+      hintLogo: "Наведите на знак — эффект реагирует на курсор",
+      hintStatic: "Магнитная кучка · хвост · гравитация · полёт домой",
+      logoHints: {
+        "static-noise": "Магнитная кучка · хвост · гравитация · полёт домой",
+        mercury: "Жидкий металл · тяни — продолжает течь",
+        gem: "Грани кристалла · орбитальный свет · мягкое свечение края",
+        "fluid-chrome": "Жидкий хром внутри знака · мешайте курсором",
+        smokey: "Дым внутри силуэта · тяните, чтобы мешать",
+        neon: "Переливная неоновая трубка · bloom · мерцание",
+      },
       hintImageOn: "Локальное изображение",
       hintImageOff: "Опциональное локальное изображение (не загружается)",
       hintAmbient: "Ambient-анимация",
       errImageType: "Выберите изображение (png / jpg / webp)",
       errImageRead: "Не удалось прочитать изображение",
+      errSvgType: "Выберите файл SVG",
+      errSvgRead: "Не удалось прочитать SVG",
     },
     shadersLab: {
       kicker: "Lab · Tech Art",
       title: "Шейдер-лаб",
       lead:
         "Fullscreen multipass и превью материалов — Rain Forest, облака, fake lights. Живое редактирование GLSL.",
+      back: "← Tech Art",
     },
   },
 } as const;

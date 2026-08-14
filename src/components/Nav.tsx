@@ -2,18 +2,37 @@ import { useEffect, useId, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useI18n } from "../i18n/I18nProvider";
 
+type NavItem = {
+  to: string;
+  label: string;
+  match: (pathname: string) => boolean;
+};
+
 export function Nav() {
   const { pathname } = useLocation();
   const { locale, setLocale, t } = useI18n();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuId = useId();
 
-  const links = [
-    { to: "/work/web", label: t.nav.web, match: "/work/web" },
-    { to: "/lab/web", label: t.nav.studio, match: "/lab/web" },
-    { to: "/work/ta", label: t.nav.ta, match: "/work/ta" },
-    { to: "/lab/shaders", label: t.nav.shaders, match: "/lab/shaders" },
-    { to: "/contact", label: t.nav.contact, match: "/contact" },
+  const links: NavItem[] = [
+    {
+      to: "/work/web",
+      label: t.nav.work,
+      match: (p) => p.startsWith("/work/web") || p.startsWith("/lab/web"),
+    },
+    {
+      to: "/work/ta",
+      label: t.nav.ta,
+      match: (p) =>
+        p.startsWith("/work/ta") ||
+        p.startsWith("/work/mass-npc") ||
+        p.startsWith("/lab/shaders"),
+    },
+    {
+      to: "/contact",
+      label: t.nav.contact,
+      match: (p) => p.startsWith("/contact"),
+    },
   ];
 
   useEffect(() => {
@@ -66,9 +85,7 @@ export function Nav() {
             <li key={link.to}>
               <NavLink
                 to={link.to}
-                aria-current={
-                  pathname.startsWith(link.match) ? "page" : undefined
-                }
+                aria-current={link.match(pathname) ? "page" : undefined}
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}

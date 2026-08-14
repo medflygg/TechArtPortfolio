@@ -1,17 +1,11 @@
 import { Link } from "react-router-dom";
 import type { MouseEvent } from "react";
-import { webCategories } from "../data/webCases";
 import { useI18n } from "../i18n/I18nProvider";
 import {
   HoloUiVisual,
   LaunchSitesVisual,
   ShaderStudioVisual,
 } from "../components/WorkWebVisuals";
-
-const visuals = {
-  "holo-ui": HoloUiVisual,
-  "launch-sites": LaunchSitesVisual,
-} as const;
 
 export function WorkWebPage() {
   const { t } = useI18n();
@@ -28,8 +22,14 @@ export function WorkWebPage() {
     stage.style.setProperty("--my", `${y}%`);
   };
 
+  const launch = w.categories.launch;
+  const holo = w.categories.holo;
+
   return (
     <main className="page page--dark">
+      <p className="wc-back">
+        <Link to="/">{t.nav.backHome}</Link>
+      </p>
       <header className="section-head section-head--split">
         <div>
           <p className="section-kicker">{w.kicker}</p>
@@ -38,13 +38,26 @@ export function WorkWebPage() {
         </div>
         <div className="section-switch">
           <Link to="/work/web" aria-current="page">
-            {t.nav.web}
+            {t.nav.work}
           </Link>
           <Link to="/work/ta">{t.nav.ta}</Link>
         </div>
       </header>
 
       <div className="work-grid">
+        <Link
+          className="work-card work-card--rich work-card--sites"
+          to="/work/web/launch"
+        >
+          <div className="work-card__thumb work-card__thumb--rich" aria-hidden>
+            <LaunchSitesVisual title={launch.title} />
+          </div>
+          <div className="work-card__meta">
+            <h2>{launch.title}</h2>
+            <p>{launch.tags}</p>
+          </div>
+        </Link>
+
         <Link
           className="work-card work-card--rich"
           to="/lab/web"
@@ -59,25 +72,15 @@ export function WorkWebPage() {
           </div>
         </Link>
 
-        {webCategories.map((cat) => {
-          const copy = w.categories[cat.id];
-          const Visual = visuals[cat.visual];
-          return (
-            <Link
-              key={cat.id}
-              className={`work-card work-card--rich${cat.id === "launch" ? " work-card--sites" : ""}`}
-              to={`/work/web/${cat.id}`}
-            >
-              <div className="work-card__thumb work-card__thumb--rich" aria-hidden>
-                <Visual title={copy.title} />
-              </div>
-              <div className="work-card__meta">
-                <h2>{copy.title}</h2>
-                <p>{copy.tags}</p>
-              </div>
-            </Link>
-          );
-        })}
+        <Link className="work-card work-card--rich" to="/work/web/holo">
+          <div className="work-card__thumb work-card__thumb--rich" aria-hidden>
+            <HoloUiVisual title={holo.title} />
+          </div>
+          <div className="work-card__meta">
+            <h2>{holo.title}</h2>
+            <p>{holo.tags}</p>
+          </div>
+        </Link>
       </div>
     </main>
   );

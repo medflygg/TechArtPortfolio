@@ -11,6 +11,7 @@ type ArtPiece = {
   img: string;
   title: Record<Locale, string>;
   caption: Record<Locale, string>;
+  body: Record<Locale, string>;
   featured?: boolean;
 };
 
@@ -23,6 +24,10 @@ const WORK_PIECES: ArtPiece[] = [
       en: "Hammered copper bowl · oxidized rim · 2024",
       ru: "Медная чаша · окисленный край · 2024",
     },
+    body: {
+      en: "Raised from a single sheet, the vessel holds a quiet curve and a dark oxidized lip. Meant for table or plinth — light should travel the hammer marks.",
+      ru: "Поднят из одного листа: спокойный объём и тёмный окисленный край. Для стола или подиума — свет должен идти по следам молота.",
+    },
     featured: true,
   },
   {
@@ -32,6 +37,10 @@ const WORK_PIECES: ArtPiece[] = [
     caption: {
       en: "Wall-mounted disc · brushed patina · Ø 48 cm",
       ru: "Настенный диск · патина · Ø 48 см",
+    },
+    body: {
+      en: "A brushed field with a soft patina bloom. Mounts flush; the edge catches side light like a thin ember ring.",
+      ru: "Шлифованное поле с мягким пятном патины. Крепится вплотную; край ловит боковой свет тонким кольцом жара.",
     },
     featured: true,
   },
@@ -43,6 +52,10 @@ const WORK_PIECES: ArtPiece[] = [
       en: "Folded sheet sculpture · heat-formed edge",
       ru: "Скульптура из листа · термоформованный край",
     },
+    body: {
+      en: "One decisive fold after annealing. The heat-formed edge keeps a sharp memory of the torch line.",
+      ru: "Одна точная складка после отжига. Термоформованный край хранит след линии пламени.",
+    },
     featured: true,
   },
   {
@@ -52,6 +65,10 @@ const WORK_PIECES: ArtPiece[] = [
     caption: {
       en: "Suspended copper ribbon · tension study",
       ru: "Подвесная медная лента · исследование натяжения",
+    },
+    body: {
+      en: "A hanging ribbon under controlled tension — weight and spring balanced so the curve never fully rests.",
+      ru: "Подвесная лента под контролируемым натяжением — вес и упругость сведены так, чтобы кривая не успокаивалась.",
     },
     featured: true,
   },
@@ -63,6 +80,10 @@ const WORK_PIECES: ArtPiece[] = [
       en: "Relief mask · fire-annealed surface",
       ru: "Рельефная маска · поверхность после отжига",
     },
+    body: {
+      en: "Relief worked from the reverse. Fire-annealed planes shift from matte charcoal to warm copper.",
+      ru: "Рельеф с обратной стороны. После отжига плоскости уходят от матового угля к тёплой меди.",
+    },
   },
   {
     id: "patina",
@@ -71,6 +92,10 @@ const WORK_PIECES: ArtPiece[] = [
     caption: {
       en: "Verdigris gradient on hammered plane",
       ru: "Градиент патины на кованой плоскости",
+    },
+    body: {
+      en: "A study panel for verdigris transitions on hammered copper — chemistry timed in stages, not poured once.",
+      ru: "Учебная панель градиента патины на кованой меди — химия слоями по времени, не одним проливом.",
     },
   },
   {
@@ -81,6 +106,10 @@ const WORK_PIECES: ArtPiece[] = [
       en: "Charred copper panel · industrial scale",
       ru: "Обожжённая медная панель · индустриальный масштаб",
     },
+    body: {
+      en: "Industrial-scale panel with charred zones and bright scars where the hammer broke the oxide skin.",
+      ru: "Панель индустриального масштаба: обугленные зоны и светлые шрамы, где молот пробил оксидную кожу.",
+    },
   },
   {
     id: "ember",
@@ -89,6 +118,10 @@ const WORK_PIECES: ArtPiece[] = [
     caption: {
       en: "Glowing edge fragment · limited edition",
       ru: "Фрагмент с раскалённым краем · лимитированная серия",
+    },
+    body: {
+      en: "A limited fragment where the edge keeps a forged heat glow — small enough for shelf, strong enough as a study.",
+      ru: "Лимитированный фрагмент с раскалённым кованым краем — для полки, но читается как законченное исследование.",
     },
   },
 ];
@@ -104,6 +137,7 @@ const COPY = {
     ctaWork: "View works",
     ctaProcess: "Process",
     featured: "Selected works",
+    featuredAll: "All works →",
     workTitle: "Works",
     workSub: "Copper · hammered · patinated · 2019–2025",
     processTitle: "Process",
@@ -140,6 +174,8 @@ const COPY = {
     formPhName: "Your name",
     formPhEmail: "you@email.com",
     formPhBrief: "Dimensions, intent, timeline…",
+    backPiece: "← Back to works",
+    inquirePiece: "Inquire about this piece",
   },
   ru: {
     brand: "KILN",
@@ -151,6 +187,7 @@ const COPY = {
     ctaWork: "Смотреть работы",
     ctaProcess: "Процесс",
     featured: "Избранное",
+    featuredAll: "Все работы →",
     workTitle: "Работы",
     workSub: "Медь · ковка · патина · 2019–2025",
     processTitle: "Процесс",
@@ -187,6 +224,8 @@ const COPY = {
     formPhName: "Ваше имя",
     formPhEmail: "you@email.com",
     formPhBrief: "Размеры, задача, сроки…",
+    backPiece: "← К работам",
+    inquirePiece: "Спросить об этой работе",
   },
 } as const;
 
@@ -256,7 +295,7 @@ function KaStyles() {
       }
 
       .ka-body {
-        overflow: auto;
+        overflow: hidden;
         flex: 1;
         min-height: 0;
         height: 100%;
@@ -276,6 +315,7 @@ function KaStyles() {
         top: 0;
         z-index: 10;
         backdrop-filter: blur(8px);
+        flex-shrink: 0;
       }
 
       .ka-root[data-mode="thumb"] .ka-nav { padding: 5px 8px; gap: 4px; }
@@ -317,7 +357,14 @@ function KaStyles() {
       .ka-page {
         flex: 1;
         min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
         animation: ka-fade 0.32s ease;
+      }
+
+      .ka-root[data-mode="thumb"] .ka-page {
+        overflow: hidden;
       }
 
       @keyframes ka-fade {
@@ -325,18 +372,46 @@ function KaStyles() {
         to { opacity: 1; transform: translateY(0); }
       }
 
-      /* ── Hero abstract background ── */
+      /* ── Home: hero + featured fill the frame ── */
+      .ka-home {
+        flex: 1;
+        min-height: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
       .ka-hero {
         position: relative;
         overflow: hidden;
-        min-height: 240px;
+        flex: 0 0 34%;
+        min-height: 140px;
         border-bottom: 1px solid rgba(196, 122, 58, 0.18);
         display: flex;
         align-items: flex-end;
         isolation: isolate;
       }
 
-      .ka-root[data-mode="thumb"] .ka-hero { min-height: 128px; }
+      .ka-root[data-mode="thumb"] .ka-hero {
+        flex: 1;
+        min-height: 0;
+        border-bottom: 0;
+      }
+
+      .ka-hero__static {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+      }
+
+      .ka-hero__static img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transform: scale(1.04);
+      }
 
       .ka-hero__veil {
         position: absolute;
@@ -359,50 +434,220 @@ function KaStyles() {
       .ka-hero__copy {
         position: relative;
         z-index: 2;
-        padding: 28px 20px 24px;
-        max-width: 58%;
+        padding: 22px 18px 20px;
+        max-width: 62%;
       }
 
       .ka-root[data-mode="thumb"] .ka-hero__copy {
-        padding: 12px 10px 10px;
-        max-width: 72%;
+        padding: 18px 14px 16px;
+        max-width: 90%;
       }
 
       .ka-hero__eyebrow {
-        font-size: 8px;
+        font-size: 9px;
         letter-spacing: 0.28em;
         text-transform: uppercase;
         color: var(--ka-copper);
         margin-bottom: 6px;
       }
 
+      .ka-root[data-mode="thumb"] .ka-hero__eyebrow {
+        font-size: 11px;
+        margin-bottom: 8px;
+      }
+
       .ka-hero h1 {
         font-family: var(--font-display, "Syne", sans-serif);
-        font-size: 22px;
+        font-size: clamp(22px, 3.2vw, 34px);
         font-weight: 700;
-        letter-spacing: 0.02em;
-        line-height: 1.1;
+        letter-spacing: -0.03em;
+        line-height: 1.05;
         margin: 0 0 8px;
-        color: rgba(255, 248, 240, 0.96);
+        color: #fff5eb;
       }
 
-      .ka-root[data-mode="thumb"] .ka-hero h1 { font-size: 14px; margin-bottom: 4px; }
+      .ka-root[data-mode="thumb"] .ka-hero h1 {
+        font-size: 26px;
+        margin-bottom: 0;
+      }
 
       .ka-hero p {
-        margin: 0 0 12px;
-        font-size: 10px;
-        color: rgba(255, 245, 235, 0.55);
-        max-width: 36em;
+        margin: 0 0 14px;
+        font-size: 12px;
+        line-height: 1.45;
+        color: rgba(255, 245, 235, 0.62);
+        max-width: 42ch;
       }
 
-      .ka-root[data-mode="thumb"] .ka-hero p { font-size: 8px; margin-bottom: 8px; }
+      .ka-root[data-mode="thumb"] .ka-hero p,
+      .ka-root[data-mode="thumb"] .ka-hero__actions {
+        display: none;
+      }
 
       .ka-hero__actions {
         display: flex;
-        gap: 8px;
         flex-wrap: wrap;
+        gap: 8px;
       }
 
+      /* ── Featured gallery (fills remaining home space) ── */
+      .ka-featured {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        background: #0a0705;
+      }
+
+      .ka-root[data-mode="thumb"] .ka-featured {
+        display: none;
+      }
+
+      .ka-featured__head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 14px 8px;
+        flex-shrink: 0;
+        border-bottom: 1px solid rgba(196, 122, 58, 0.12);
+      }
+
+      .ka-featured__head h2 {
+        margin: 0;
+        font-family: var(--font-display, "Syne", sans-serif);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(255, 245, 235, 0.78);
+      }
+
+      .ka-root[data-mode="thumb"] .ka-featured__head h2 { font-size: 9px; letter-spacing: 0.1em; }
+
+      .ka-featured__all {
+        appearance: none;
+        border: 0;
+        background: transparent;
+        color: rgba(232, 192, 122, 0.78);
+        font: inherit;
+        font-size: 11px;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .ka-featured__all:hover { color: var(--ka-a); }
+
+      .ka-featured__grid {
+        flex: 1;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 2px;
+        background: rgba(196, 122, 58, 0.12);
+      }
+
+      .ka-root[data-mode="thumb"] .ka-featured__grid {
+        grid-template-rows: 1fr 1fr;
+        gap: 2px;
+        min-height: 0;
+      }
+
+      .ka-root[data-mode="thumb"] .ka-featured__card {
+        min-height: 0;
+      }
+
+      .ka-featured__card {
+        position: relative;
+        overflow: hidden;
+        min-height: 0;
+        cursor: pointer;
+        background: #0a0705;
+        transition: filter 0.25s;
+      }
+
+      .ka-featured__card:hover {
+        filter: brightness(1.08);
+      }
+
+      .ka-featured__card:hover img { transform: scale(1.05); }
+
+      .ka-featured__card img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transform: scale(1.02);
+        transition: transform 0.45s ease;
+      }
+
+      .ka-featured__veil {
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(0deg, rgba(6, 3, 1, 0.92) 0%, rgba(6, 3, 1, 0.45) 42%, transparent 72%);
+        pointer-events: none;
+      }
+
+      .ka-featured__copy {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        padding: 18px 16px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .ka-root[data-mode="thumb"] .ka-featured__copy {
+        padding: 8px 6px 6px;
+      }
+
+      .ka-featured__copy strong {
+        font-family: var(--font-display, "Syne", sans-serif);
+        font-size: clamp(16px, 2.1vw, 24px);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1.05;
+        color: #fff5eb;
+        text-shadow: 0 1px 12px rgba(0, 0, 0, 0.55);
+      }
+
+      .ka-root[data-mode="thumb"] .ka-featured__copy strong { font-size: 10px; }
+
+      .ka-featured__copy span {
+        font-size: clamp(11px, 1.25vw, 13px);
+        line-height: 1.4;
+        color: rgba(255, 245, 235, 0.72);
+        max-width: 36ch;
+      }
+
+      .ka-root[data-mode="thumb"] .ka-featured__copy span { display: none; }
+
+      @media (max-width: 640px) {
+        .ka-root[data-mode="full"] .ka-hero {
+          flex: 0 0 32%;
+        }
+        .ka-root[data-mode="full"] .ka-hero__copy {
+          max-width: 100%;
+          padding: 16px 12px 14px;
+        }
+        .ka-root[data-mode="full"] .ka-featured__copy {
+          padding: 14px 12px 12px;
+        }
+        .ka-root[data-mode="full"] .ka-featured__copy strong {
+          font-size: clamp(14px, 4.2vw, 18px);
+        }
+      }
+
+      /* Buttons */
       .ka-btn {
         appearance: none;
         border: 0;
@@ -738,7 +983,7 @@ function KaStyles() {
       }
 
       .ka-work-item {
-        cursor: default;
+        cursor: pointer;
         transition: transform 0.22s ease;
       }
 
@@ -791,6 +1036,77 @@ function KaStyles() {
         font-size: 8px;
         color: rgba(255, 245, 235, 0.42);
         line-height: 1.35;
+      }
+
+      .ka-pdp {
+        display: grid;
+        grid-template-columns: 1.15fr 1fr;
+        gap: 16px;
+        padding: 14px;
+        align-items: start;
+      }
+
+      .ka-pdp__back {
+        appearance: none;
+        border: 0;
+        background: transparent;
+        color: rgba(232, 192, 122, 0.75);
+        font: inherit;
+        font-size: 10px;
+        letter-spacing: 0.06em;
+        cursor: pointer;
+        padding: 0;
+        margin-bottom: 10px;
+        text-align: left;
+      }
+
+      .ka-pdp__back:hover { color: var(--ka-a); }
+
+      .ka-pdp__media {
+        border: 1px solid rgba(196, 122, 58, 0.22);
+        background: #0a0705;
+        overflow: hidden;
+        min-height: 220px;
+        aspect-ratio: 4 / 5;
+      }
+
+      .ka-pdp__media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .ka-pdp__copy h2 {
+        margin: 0 0 6px;
+        font-family: var(--font-display, "Syne", sans-serif);
+        font-size: 22px;
+        letter-spacing: -0.02em;
+        color: #fff5eb;
+      }
+
+      .ka-pdp__cap {
+        margin: 0 0 12px;
+        font-size: 10px;
+        color: rgba(232, 192, 122, 0.7);
+        letter-spacing: 0.04em;
+      }
+
+      .ka-pdp__body {
+        margin: 0 0 16px;
+        font-size: 11px;
+        line-height: 1.55;
+        color: rgba(255, 245, 235, 0.62);
+      }
+
+      @media (max-width: 640px) {
+        .ka-root[data-mode="full"] .ka-pdp {
+          grid-template-columns: 1fr;
+        }
+        .ka-root[data-mode="full"] .ka-pdp__media {
+          aspect-ratio: 16 / 11;
+          min-height: 140px;
+        }
       }
 
       /* ── Process ── */
@@ -1049,11 +1365,16 @@ function KaStyles() {
 
       .ka-footer {
         margin-top: auto;
+        flex-shrink: 0;
         padding: 8px 14px;
         border-top: 1px solid rgba(196, 122, 58, 0.1);
         font-size: 8px;
         color: rgba(255, 245, 235, 0.28);
         text-align: center;
+      }
+
+      .ka-root[data-mode="thumb"] .ka-footer {
+        display: none;
       }
 
       @media (max-width: 640px) {
@@ -1081,14 +1402,13 @@ function KaStyles() {
 
         .ka-root[data-mode="full"] .ka-hero__copy {
           max-width: 100%;
-          padding: 18px 12px 14px;
+          padding: 16px 12px 14px;
         }
 
         .ka-root[data-mode="full"] .ka-hero h1 {
           font-size: clamp(22px, 7vw, 32px);
         }
 
-        .ka-root[data-mode="full"] .ka-strip__layout,
         .ka-root[data-mode="full"] .ka-masonry,
         .ka-root[data-mode="full"] .ka-process,
         .ka-root[data-mode="full"] .ka-contact {
@@ -1099,7 +1419,12 @@ function KaStyles() {
           display: none;
         }
 
-        .ka-root[data-mode="full"] .ka-feature {
+        .ka-root[data-mode="full"] .ka-pdp {
+          grid-template-columns: 1fr;
+        }
+
+        .ka-root[data-mode="full"] .ka-pdp__media {
+          aspect-ratio: 16 / 11;
           min-height: 140px;
         }
       }
@@ -1205,7 +1530,12 @@ export function KilnAtelierSite({
 }) {
   const t = COPY[locale];
   const [page, setPage] = useState<PageId>("home");
+  const [pieceId, setPieceId] = useState<string | null>(null);
   const activePage = mode === "thumb" ? "home" : page;
+  const activePiece =
+    mode === "full" && pieceId
+      ? WORK_PIECES.find((p) => p.id === pieceId) ?? null
+      : null;
 
   const featured = WORK_PIECES.filter((p) => p.featured);
   const navPages: { id: PageId; label: string }[] = [
@@ -1216,11 +1546,27 @@ export function KilnAtelierSite({
   ];
 
   const goTo = (id: PageId) => {
-    if (mode === "full") setPage(id);
+    if (mode !== "full") return;
+    setPieceId(null);
+    setPage(id);
+  };
+
+  const openPiece = (id: string) => {
+    if (mode !== "full") return;
+    setPieceId(id);
+  };
+
+  const closePiece = () => {
+    setPieceId(null);
+    if (page !== "work") setPage("work");
   };
 
   return (
-    <Shell url={`${t.host} / ${activePage}`} accent={accent} mode={mode}>
+    <Shell
+      url={`${t.host} / ${activePiece ? activePiece.id : activePage}`}
+      accent={accent}
+      mode={mode}
+    >
       <nav className="ka-nav">
         <span className="ka-nav__brand">{t.brand}</span>
         {mode === "full" &&
@@ -1228,8 +1574,8 @@ export function KilnAtelierSite({
             <button
               key={p.id}
               type="button"
-              className={`ka-nav__link${activePage === p.id ? " is-active" : ""}`}
-              onClick={() => setPage(p.id)}
+              className={`ka-nav__link${activePage === p.id && !activePiece ? " is-active" : ""}`}
+              onClick={() => goTo(p.id)}
             >
               {p.label}
             </button>
@@ -1237,10 +1583,39 @@ export function KilnAtelierSite({
       </nav>
 
       <main className="ka-page">
-        {activePage === "home" && (
-          <>
+        {activePiece ? (
+          <section className="ka-pdp">
+            <div className="ka-pdp__media">
+              <ArtImage src={activePiece.img} alt={activePiece.title[locale]} />
+            </div>
+            <div className="ka-pdp__copy">
+              <button type="button" className="ka-pdp__back" onClick={closePiece}>
+                {t.backPiece}
+              </button>
+              <h2>{activePiece.title[locale]}</h2>
+              <p className="ka-pdp__cap">{activePiece.caption[locale]}</p>
+              <p className="ka-pdp__body">{activePiece.body[locale]}</p>
+              <button
+                type="button"
+                className="ka-btn ka-btn--primary"
+                onClick={() => goTo("contact")}
+              >
+                {t.inquirePiece}
+              </button>
+            </div>
+          </section>
+        ) : null}
+
+        {!activePiece && activePage === "home" && (
+          <div className="ka-home">
             <section className="ka-hero">
-              <CopperLiquidBg />
+              {mode === "thumb" ? (
+                <div className="ka-hero__static" aria-hidden>
+                  <img src={kilnArtPhotos.forge} alt="" loading="lazy" />
+                </div>
+              ) : (
+                <CopperLiquidBg />
+              )}
               <div className="ka-hero__veil" aria-hidden />
               <div className="ka-hero__copy">
                 <div className="ka-hero__eyebrow">{t.brand}</div>
@@ -1259,55 +1634,39 @@ export function KilnAtelierSite({
               </div>
             </section>
 
-            <section className="ka-strip">
-              <div className="ka-strip__head">
+            <section className="ka-featured">
+              <div className="ka-featured__head">
                 <h2>{t.featured}</h2>
+                {mode === "full" && (
+                  <button type="button" className="ka-featured__all" onClick={() => goTo("work")}>
+                    {t.featuredAll}
+                  </button>
+                )}
               </div>
-              <div className="ka-strip__layout">
-                {featured[0] && (
+              <div className="ka-featured__grid">
+                {featured.slice(0, 4).map((piece) => (
                   <article
-                    className="ka-feature"
-                    onClick={() => goTo("work")}
-                    onKeyDown={(e) => e.key === "Enter" && goTo("work")}
+                    key={piece.id}
+                    className="ka-featured__card"
+                    onClick={() => openPiece(piece.id)}
+                    onKeyDown={(e) => e.key === "Enter" && openPiece(piece.id)}
                     role="button"
                     tabIndex={0}
                   >
-                    <div className="ka-feature__img">
-                      <ArtImage src={featured[0].img} alt={featured[0].title[locale]} />
-                    </div>
-                    <div className="ka-feature__veil" />
-                    <div className="ka-feature__copy">
-                      <strong>{featured[0].title[locale]}</strong>
-                      <span>{featured[0].caption[locale]}</span>
+                    <ArtImage src={piece.img} alt={piece.title[locale]} />
+                    <div className="ka-featured__veil" />
+                    <div className="ka-featured__copy">
+                      <strong>{piece.title[locale]}</strong>
+                      <span>{piece.caption[locale]}</span>
                     </div>
                   </article>
-                )}
-                <div className="ka-side-list">
-                  {featured.slice(1, mode === "thumb" ? 3 : 4).map((piece) => (
-                    <article
-                      key={piece.id}
-                      className="ka-side-item"
-                      onClick={() => goTo("work")}
-                      onKeyDown={(e) => e.key === "Enter" && goTo("work")}
-                      role="button"
-                      tabIndex={0}
-                    >
-                      <div className="ka-side-item__thumb">
-                        <ArtImage src={piece.img} alt={piece.title[locale]} />
-                      </div>
-                      <div className="ka-side-item__meta">
-                        <b>{piece.title[locale]}</b>
-                        <em>{piece.caption[locale]}</em>
-                      </div>
-                    </article>
-                  ))}
-                </div>
+                ))}
               </div>
             </section>
-          </>
+          </div>
         )}
 
-        {activePage === "work" && mode === "full" && (
+        {!activePiece && activePage === "work" && mode === "full" && (
           <section className="ka-work">
             <header className="ka-work__head">
               <h2>{t.workTitle}</h2>
@@ -1315,7 +1674,14 @@ export function KilnAtelierSite({
             </header>
             <div className="ka-masonry">
               {WORK_PIECES.map((piece) => (
-                <article key={piece.id} className="ka-work-item">
+                <article
+                  key={piece.id}
+                  className="ka-work-item"
+                  onClick={() => openPiece(piece.id)}
+                  onKeyDown={(e) => e.key === "Enter" && openPiece(piece.id)}
+                  role="button"
+                  tabIndex={0}
+                >
                   <div className="ka-work-item__frame">
                     <ArtImage src={piece.img} alt={piece.title[locale]} />
                   </div>
@@ -1329,7 +1695,7 @@ export function KilnAtelierSite({
           </section>
         )}
 
-        {activePage === "process" && mode === "full" && (
+        {!activePiece && activePage === "process" && mode === "full" && (
           <section className="ka-process">
             <header className="ka-process__head">
               <h2>{t.processTitle}</h2>
@@ -1352,7 +1718,7 @@ export function KilnAtelierSite({
           </section>
         )}
 
-        {activePage === "contact" && mode === "full" && (
+        {!activePiece && activePage === "contact" && mode === "full" && (
           <section className="ka-contact">
             <div>
               <header className="ka-contact__head">

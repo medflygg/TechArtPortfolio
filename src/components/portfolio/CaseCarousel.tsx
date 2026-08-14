@@ -15,7 +15,6 @@ export function CaseCarousel({ slides, accent, title }: CaseCarouselProps) {
   const [index, setIndex] = useState(0);
   const total = slides.length;
   const safeIndex = total === 0 ? 0 : ((index % total) + total) % total;
-  const current = total > 0 ? slides[safeIndex] : null;
 
   const go = useCallback(
     (dir: -1 | 1) => {
@@ -34,7 +33,16 @@ export function CaseCarousel({ slides, accent, title }: CaseCarouselProps) {
     return () => window.removeEventListener("keydown", onKey);
   }, [go]);
 
-  if (!current || total === 0) return null;
+  // Preload image slides so switches don't flash empty frames.
+  useEffect(() => {
+    for (const slide of slides) {
+      if (slide.kind !== "image") continue;
+      const img = new Image();
+      img.src = slide.src;
+    }
+  }, [slides]);
+
+  if (total === 0) return null;
 
   return (
     <div className="pcar" style={{ "--pcar-accent": accent } as CSSProperties}>
@@ -56,18 +64,25 @@ export function CaseCarousel({ slides, accent, title }: CaseCarouselProps) {
           ‹
         </button>
 
-        <div className="pcar-frame" key={`${current.kind}-${safeIndex}`}>
-          {current.kind === "image" ? (
-            <img
-              className="pcar-img"
-              src={current.src}
-              alt={current.label}
-            />
-          ) : (
-            <div className="pcar-mock-wrap">
-              <PortfolioMock id={current.mock} />
-            </div>
-          )}
+        <div className="pcar-frame">
+          {slides.map((slide, i) => {
+            const active = i === safeIndex;
+            return (
+              <div
+                key={`${slide.label}-${i}`}
+                className={`pcar-slide${active ? " is-on" : ""}`}
+                aria-hidden={!active}
+              >
+                {slide.kind === "image" ? (
+                  <img className="pcar-img" src={slide.src} alt={slide.label} />
+                ) : (
+                  <div className="pcar-mock-wrap">
+                    <PortfolioMock id={slide.mock} />
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         <button
@@ -152,29 +167,39 @@ const PCAR_CSS = `
 }
 .pcar-frame {
   position: relative;
-  overflow: auto;
-  max-height: 78vh;
+  overflow: hidden;
+  min-height: min(70vh, 720px);
+  height: min(70vh, 720px);
   background: #f4f4f4;
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 10px;
-  animation: pcar-fade 0.28s ease;
+}
+.pcar-slide {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.pcar-slide.is-on {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 1;
 }
 .pcar-img {
   display: block;
   width: 100%;
   height: auto;
-  max-height: none;
   object-fit: contain;
   background: #f4f4f4;
 }
 .pcar-mock-wrap {
   width: 100%;
-  min-height: 320px;
+  min-height: 100%;
   background: #fff;
-}
-@keyframes pcar-fade {
-  from { opacity: 0.35; transform: translateY(4px); }
-  to { opacity: 1; transform: none; }
 }
 .pcar-tabs {
   display: flex;
@@ -215,6 +240,10 @@ const PCAR_CSS = `
   .pcar-stage {
     grid-template-columns: 32px 1fr 32px;
     gap: 4px;
+  }
+  .pcar-frame {
+    min-height: min(62vh, 560px);
+    height: min(62vh, 560px);
   }
   .pcar-tab-label {
     display: none;
