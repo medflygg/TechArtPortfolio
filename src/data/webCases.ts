@@ -9,6 +9,8 @@ export type WebCaseMeta = {
   kind: WebCaseKind;
   livingId?: string;
   portfolioId?: string;
+  /** On hold — keep code, hide from listings + routes */
+  hidden?: boolean;
 };
 
 export const webCategories: {
@@ -43,6 +45,12 @@ export const webCases: WebCaseMeta[] = [
     id: "vesper",
     category: "launch",
     accent: "#c9a36a",
+    kind: "living",
+  },
+  {
+    id: "ether",
+    category: "launch",
+    accent: "#6B4EFF",
     kind: "living",
   },
   {
@@ -91,9 +99,11 @@ export function getWebCategory(id: string) {
 }
 
 export function getWebCase(id: string) {
-  return webCases.find((c) => c.id === id) ?? null;
+  const c = webCases.find((x) => x.id === id) ?? null;
+  if (c?.hidden) return null;
+  return c;
 }
 
 export function casesForCategory(category: WebCategoryId) {
-  return webCases.filter((c) => c.category === category);
+  return webCases.filter((c) => c.category === category && !c.hidden);
 }

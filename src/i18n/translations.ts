@@ -131,6 +131,10 @@ export const translations = {
           title: "Vesper",
           tags: "Private cabaret · Members · Live UI",
         },
+        ether: {
+          title: "ÉTHER",
+          tags: "Custom scent · Atmosphere · Sound",
+        },
         shikhovo: {
           title: "Shikhovo",
           tags: "Family farm · Map · Tickets · RU",
@@ -171,6 +175,12 @@ export const translations = {
           title: "Vesper",
           tags: "Invitation · Programme · Tables · Live",
           lead: "A closed house in Paris — tonight's programme, a live floor, names in the book.",
+        },
+        ether: {
+          audience: "Custom fragrance house",
+          title: "ÉTHER",
+          tags: "Atmosphere · Sound · DNA · Commission",
+          lead: "No finished bottle — immerse in abstract fields and sound, then commission a scent composed only for you.",
         },
         shikhovo: {
           audience: "Family eco-farm",
@@ -471,6 +481,10 @@ export const translations = {
           title: "Vesper",
           tags: "Закрытый кабаре · Члены · Live UI",
         },
+        ether: {
+          title: "ÉTHER",
+          tags: "Кастом · Атмосфера · Звук",
+        },
         shikhovo: {
           title: "Шихово",
           tags: "Семейная ферма · Карта · Билеты · RU",
@@ -511,6 +525,12 @@ export const translations = {
           title: "Vesper",
           tags: "Приглашение · Программа · Столы · Live",
           lead: "Закрытый дом в Париже — программа ночи, живой зал, имена в книге.",
+        },
+        ether: {
+          audience: "Кастомный парфюмерный дом",
+          title: "ÉTHER",
+          tags: "Атмосфера · Звук · ДНК · Заказ",
+          lead: "Готового флакона нет — погружение в абстрактное поле и звук, затем заказ аромата только для вас.",
         },
         shikhovo: {
           audience: "Семейная зооферма",

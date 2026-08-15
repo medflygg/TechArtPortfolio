@@ -8,6 +8,7 @@ import {
 import { GreenBasketSite } from "./GreenBasketSite";
 import { KilnAtelierSite } from "./KilnAtelierSite";
 import { MochalkiSite } from "./MochalkiSite";
+import { EtherSite } from "./EtherSite";
 import { NordPulseSite } from "./NordPulseSite";
 import { ShikhovoSite } from "./ShikhovoSite";
 import { VesperSite } from "./VesperSite";
@@ -2828,6 +2829,7 @@ const SITES: Record<
   nordpulse: (p) => <NordPulseSite {...p} />,
   greenbasket: (p) => <GreenBasketSite {...p} />,
   mochalki: (p) => <MochalkiSite {...p} />,
+  ether: (p) => <EtherSite {...p} />,
   vesper: (p) => <VesperSite {...p} />,
   shikhovo: (p) => <ShikhovoSite {...p} />,
 };
