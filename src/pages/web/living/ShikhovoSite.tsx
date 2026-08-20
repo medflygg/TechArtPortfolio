@@ -532,14 +532,18 @@ function Styles() {
       .sh-body {
         flex: 1; min-height: 0; overflow: auto;
         display: flex; flex-direction: column;
+        container-type: size;
+        scrollbar-gutter: stable;
       }
-      .sh-root[data-mode="thumb"] .sh-body { overflow: hidden; }
+      .sh-root[data-mode="thumb"] .sh-body { overflow: hidden; scrollbar-gutter: auto; }
 
       .sh-nav {
         display: flex; align-items: center; gap: 3px;
         padding: 7px 10px; position: sticky; top: 0; z-index: 6;
         background: rgba(247,252,249,0.94); backdrop-filter: blur(8px);
         border-bottom: 1px solid var(--sh-line);
+        flex-shrink: 0;
+        --sh-nav-h: 42px;
       }
       .sh-root[data-mode="thumb"] .sh-nav { padding: 5px 8px; }
       .sh-nav__brand {
@@ -631,12 +635,16 @@ function Styles() {
       .sh-info__item span { color: var(--sh-muted); font-size: 10px; font-weight: 600; }
       .sh-root[data-mode="thumb"] .sh-info__item span { font-size: 8px; }
 
-      /* First viewport stage = same composition as listing thumb */
+      /* First viewport stage = body scrollport minus sticky nav */
       .sh-home-stage {
         flex: 1 0 auto;
-        min-height: 100%;
+        min-height: calc(100cqh - var(--sh-nav-h, 42px));
         display: flex;
         flex-direction: column;
+      }
+      .sh-root[data-mode="thumb"] .sh-home-stage {
+        min-height: 0;
+        flex: 1;
       }
       .sh-chips {
         display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;

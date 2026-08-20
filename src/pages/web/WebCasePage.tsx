@@ -48,13 +48,15 @@ export function WebCasePage() {
           </Link>
         </div>
 
-        <div className="site-case__frame site-case__frame--viewport">
-          <LivingSite
-            caseId={meta.livingId ?? meta.id}
-            accent={meta.accent}
-            locale={locale}
-            mode="full"
-          />
+        <div className="site-case__stage">
+          <div className="site-case__frame site-case__frame--viewport">
+            <LivingSite
+              caseId={meta.livingId ?? meta.id}
+              accent={meta.accent}
+              locale={locale}
+              mode="full"
+            />
+          </div>
         </div>
       </main>
     );

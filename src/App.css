@@ -1897,15 +1897,31 @@
 }
 
 .site-case--live {
+  --site-case-pad-bottom: 36px;
+  /* Fake browser chrome strip above the 16:9 content plane */
+  --live-chrome-h: 28px;
   display: flex;
   flex-direction: column;
   height: calc(100dvh - 72px);
   min-height: 0;
   max-height: calc(100dvh - 72px);
   padding-top: 0;
-  padding-bottom: 12px;
+  padding-bottom: var(--site-case-pad-bottom);
+  gap: 16px;
   overflow: hidden;
   justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+/* Remaining space under the case bar — frame must fit here as true 16:9 */
+.site-case__stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  container-type: size;
 }
 
 .site-case__bar {
@@ -2569,9 +2585,10 @@
   }
 
   .site-case--live {
+    --site-case-pad-bottom: 24px;
     height: calc(100dvh - 64px);
     max-height: calc(100dvh - 64px);
-    padding-bottom: 10px;
+    gap: 12px;
   }
 
   .site-case__bar {
@@ -2611,11 +2628,27 @@
 
   .site-case__frame--viewport {
     margin-bottom: 0;
-    width: min(100%, calc((100dvh - 140px) * 16 / 9));
-    max-height: none;
-    aspect-ratio: 16 / 9;
-    height: auto;
+    width: min(100cqw, calc((100cqh - var(--live-chrome-h, 28px)) * 16 / 9));
+    height: calc(
+      min(100cqh - var(--live-chrome-h, 28px), calc(100cqw * 9 / 16)) +
+        var(--live-chrome-h, 28px)
+    );
+    max-width: 100%;
+    max-height: 100%;
+    aspect-ratio: auto;
     flex: 0 0 auto;
+  }
+
+  @supports not (width: 1cqh) {
+    .site-case--live .site-case__frame--viewport {
+      --frame-max-content-h: calc(
+        100dvh - 64px - var(--site-case-pad-bottom) - 120px - var(--live-chrome-h, 28px)
+      );
+      width: min(100%, calc(var(--frame-max-content-h) * 16 / 9));
+      height: calc(var(--frame-max-content-h) + var(--live-chrome-h, 28px));
+      max-height: calc(var(--frame-max-content-h) + var(--live-chrome-h, 28px));
+      aspect-ratio: auto;
+    }
   }
 
   .site-case__frame > *,
@@ -2837,14 +2870,34 @@
 .site-case__frame--viewport {
   flex: 0 0 auto;
   align-self: center;
-  /* Width capped by available height so aspect-ratio stays true 16:9 */
-  width: min(100%, calc((100dvh - 168px) * 16 / 9));
-  aspect-ratio: 16 / 9;
-  height: auto;
+  /*
+    Outer frame = 16:9 content + fake browser chrome.
+    Width fits stage; height = content(16:9) + --live-chrome-h.
+  */
+  width: min(100cqw, calc((100cqh - var(--live-chrome-h, 28px)) * 16 / 9));
+  height: calc(
+    min(100cqh - var(--live-chrome-h, 28px), calc(100cqw * 9 / 16)) +
+      var(--live-chrome-h, 28px)
+  );
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: auto;
   min-height: 0;
-  max-height: none;
-  margin: 0 auto;
+  margin: 0;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+}
+
+/* Fallback when container queries unavailable */
+@supports not (width: 1cqh) {
+  .site-case--live .site-case__frame--viewport {
+    --frame-max-content-h: calc(
+      100dvh - 72px - var(--site-case-pad-bottom) - 112px - var(--live-chrome-h, 28px)
+    );
+    width: min(100%, calc(var(--frame-max-content-h) * 16 / 9));
+    height: calc(var(--frame-max-content-h) + var(--live-chrome-h, 28px));
+    max-height: calc(var(--frame-max-content-h) + var(--live-chrome-h, 28px));
+    aspect-ratio: auto;
+  }
 }
 
 .site-case__frame > * {
@@ -3703,16 +3756,19 @@
 .site-case__frame--viewport.site-case__frame--tall,
 .site-case__frame--viewport {
   min-height: 0;
-  height: auto;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
 }
 
 .site-case--live .site-case__frame--viewport {
   flex: 0 0 auto;
-  width: min(100%, calc((100dvh - 168px) * 16 / 9));
-  aspect-ratio: 16 / 9;
-  height: auto;
-  max-height: none;
+  width: min(100cqw, calc((100cqh - var(--live-chrome-h, 28px)) * 16 / 9));
+  height: calc(
+    min(100cqh - var(--live-chrome-h, 28px), calc(100cqw * 9 / 16)) +
+      var(--live-chrome-h, 28px)
+  );
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: auto;
 }
 
 .page--dark .section-head p:last-child {

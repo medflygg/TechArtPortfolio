@@ -30,7 +30,7 @@ function readStoredLocale(): Locale {
   } catch {
     /* ignore */
   }
-  return "en";
+  return "ru";
 }
 
 function applyDocumentMeta(locale: Locale) {

@@ -28,15 +28,15 @@ const PRODUCTS: Product[] = [
     category: "body",
     name: {
       en: "Stimulite body exfoliator",
-      ru: "Боди-эксфолиатор Stimulite",
+      ru: "Эксфолиатор для тела Stimulite",
     },
     short: {
       en: "Dual-sided honeycomb surface for the body.",
-      ru: "Двусторонняя honeycomb-поверхность для тела.",
+      ru: "Двусторонняя сотовая поверхность для тела.",
     },
     description: {
       en: "Dual-sided honeycomb gently renews skin, boosts circulation, and builds rich foam with a drop of gel. Use wet or dry.",
-      ru: "Двусторонняя honeycomb-поверхность мягко обновляет кожу, стимулирует кровоток и даёт густую пену с каплей геля. Можно использовать влажным или сухим способом.",
+      ru: "Двусторонняя сотовая поверхность мягко обновляет кожу, усиливает микроциркуляцию и даёт густую пену с каплей геля. Можно использовать влажным или сухим способом.",
     },
     howTo: {
       en: [
@@ -47,9 +47,9 @@ const PRODUCTS: Product[] = [
       ],
       ru: [
         "Смочите инструмент и кожу тёплой водой",
-        "Добавьте каплю геля или масла — ячейки вспенят",
-        "Ведите мягкими круговыми движениями вверх",
-        "Ополосните и повесьте сушиться",
+        "Добавьте каплю геля или масла — ячейки вспенятся",
+        "Ведите мягкими кругами вверх",
+        "Промойте и повесьте сушиться",
       ],
     },
     price: 9900,
@@ -63,15 +63,15 @@ const PRODUCTS: Product[] = [
     category: "body",
     name: {
       en: "Bath mitt",
-      ru: "Мочалка-миттен",
+      ru: "Мочалка-варежка",
     },
     short: {
       en: "Mitt for shower and dry massage.",
-      ru: "Миттен для душа и сухого массажа.",
+      ru: "Варежка для душа и сухого массажа.",
     },
     description: {
       en: "Slips onto the hand for easy massage and foam with a drop of gel. Stimulite Honeycomb for a daily shower ritual.",
-      ru: "Надевается на руку — удобный массаж и пена с каплей геля. Honeycomb Stimulite для ежедневного ритуала в душе.",
+      ru: "Надевается на руку — удобный массаж и пена с каплей геля. Сотовая структура Stimulite для ежедневного ритуала в душе.",
     },
     howTo: {
       en: [
@@ -81,10 +81,10 @@ const PRODUCTS: Product[] = [
         "Rinse and dry",
       ],
       ru: [
-        "Наденьте миттен на руку",
+        "Наденьте варежку на руку",
         "Смочите и добавьте немного геля",
         "Массируйте кожу круговыми движениями",
-        "Ополосните и просушите",
+        "Промойте и просушите",
       ],
     },
     price: 8490,
@@ -106,7 +106,7 @@ const PRODUCTS: Product[] = [
     },
     description: {
       en: "Soft pore cleansing without harsh scrub. Flexible Stimulite Honeycomb cells work with minimal product.",
-      ru: "Бережное очищение пор без жёсткого скраба. Гибкие ячейки Stimulite Honeycomb работают с минимумом средства.",
+      ru: "Бережное очищение пор без жёсткого скраба. Гибкие сотовые ячейки Stimulite работают с минимумом средства.",
     },
     howTo: {
       en: [
@@ -205,7 +205,7 @@ const COPY = {
       checkout: "Оформление",
     },
     heroBrand: "Supracor",
-    heroTitle: "Хаником-уход, который чувствуется с первого касания",
+    heroTitle: "Сотовый уход, который чувствуется с первого касания",
     heroLead: "Официальная линейка Stimulite Honeycomb для лица и тела · доставка по России",
     ctaCatalog: "Смотреть каталог",
     ctaTech: "Как это работает",
@@ -213,15 +213,15 @@ const COPY = {
     assortment: "Ассортимент",
     assortmentTitle: "Три инструмента. Одна технология.",
     techKicker: "Технология",
-    techTitle: "Мудрость сот — в каждом касании",
+    techTitle: "Сотовая структура — в каждом касании",
     techLead:
-      "Гибкие ячейки Stimulite Honeycomb мягко отшелушивают, стимулируют микроциркуляцию и создают пену с минимумом средства. Материал naturally antimicrobial — можно использовать мокрым и сухим способом.",
-    techPoints: ["Без жёсткого абразива", "Антибактериальный материал", "Сделано на технологии Supracor"],
+      "Гибкие ячейки Stimulite Honeycomb мягко отшелушивают, усиливают микроциркуляцию и дают пену с минимумом средства. Материал с природной антимикробной защитой — можно использовать влажным или сухим способом.",
+    techPoints: ["Без жёсткого абразива", "Антибактериальный материал", "На технологии Supracor"],
     whyTitle: "Почему Supracor",
     why: [
-      ["Оригинал Supracor", "Линейка Stimulite Honeycomb с проверенного контура поставок."],
+      ["Оригинал Supracor", "Линейка Stimulite Honeycomb из проверенной цепочки поставок."],
       ["Доставка по России", "Отправка по Москве и в регионы транспортными службами."],
-      ["Поддержка ухода", "Короткие инструкции по сухому и влажному использованию."],
+      ["Поддержка ухода", "Короткие инструкции для сухого и влажного использования."],
     ],
     catalogKicker: "Каталог",
     catalogTitle: "Stimulite Honeycomb",
@@ -239,11 +239,11 @@ const COPY = {
     cartLead: "Без онлайн-оплаты — подтвердим заказ и способ оплаты отдельно",
     emptyCart: "Корзина пуста",
     continueShopping: "В каталог",
-    subtotal: "Подытог",
+    subtotal: "Сумма",
     total: "Итого",
     checkout: "Оформить",
-    checkoutTitle: "Оформление",
-    checkoutLead: "Прототип формы — реальный заказ не создаётся.",
+    checkoutTitle: "Оформление заказа",
+    checkoutLead: "Прототип формы — настоящий заказ не создаётся.",
     name: "Имя",
     phone: "Телефон",
     city: "Город",
@@ -346,6 +346,9 @@ function MkStyles() {
         display: flex;
         flex-direction: column;
         background: var(--mk-mist);
+        container-type: size;
+        /* Reserve gutter so classic Windows scrollbar doesn't shrink the 16:9 plane */
+        scrollbar-gutter: stable;
       }
 
       .mk-nav {
@@ -359,6 +362,8 @@ function MkStyles() {
         top: 0;
         z-index: 5;
         flex-shrink: 0;
+        /* First-screen hero fills body minus this nav */
+        --mk-nav-h: 45px;
       }
 
       .mk-root[data-mode="thumb"] .mk-nav { padding: 6px 8px; gap: 4px; }
@@ -439,7 +444,9 @@ function MkStyles() {
       .mk-page--home {
         display: flex;
         flex-direction: column;
-        min-height: 100%;
+        /* Do NOT use min-height: 100% — nav sits above the page inside .mk-body,
+           so 100% + nav overflows the first screen and crops the hero. */
+        min-height: 0;
       }
 
       @keyframes mk-fade {
@@ -449,9 +456,16 @@ function MkStyles() {
 
       .mk-home-stage {
         flex: 1 0 auto;
-        min-height: 100%;
+        /* Body scrollport (cqh) minus sticky site nav = true first screen */
+        min-height: calc(100cqh - var(--mk-nav-h, 45px));
         display: flex;
         flex-direction: column;
+      }
+
+      @supports not (width: 1cqh) {
+        .mk-root[data-mode="full"] .mk-home-stage {
+          min-height: calc(100% - var(--mk-nav-h, 45px));
+        }
       }
 
       .mk-hero {
