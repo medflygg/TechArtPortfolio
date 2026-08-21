@@ -32,3 +32,4 @@ credentials.json
 *.njsproj
 *.sln
 *.sw?
+docs/audi-rs5-qa

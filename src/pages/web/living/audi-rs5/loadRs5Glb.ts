@@ -85,10 +85,10 @@ function asPhys(m: THREE.Material | THREE.Material[]): THREE.MeshPhysicalMateria
   return asStd(m).filter((x): x is THREE.MeshPhysicalMaterial => x instanceof THREE.MeshPhysicalMaterial);
 }
 
-function configureMap(
-  tex: THREE.Texture,
+function configureMap<T extends THREE.Texture>(
+  tex: T,
   opts: { color?: boolean; repeat?: number; anisotropy?: number } = {},
-) {
+): T {
   tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
   const r = opts.repeat ?? 1;
   tex.repeat.set(r, r);
@@ -478,10 +478,6 @@ function applyBlackTrimPbr(mat: THREE.MeshStandardMaterial, maps: BodyPbrMaps, e
   if (env) mat.envMap = env;
   mat.needsUpdate = true;
   return mat;
-}
-
-function applySilverPbr(mat: THREE.MeshStandardMaterial, maps: BodyPbrMaps, env: THREE.Texture | null) {
-  return applyBlackTrimPbr(mat, maps, env);
 }
 
 function applyAlloyPbr(mat: THREE.MeshStandardMaterial, maps: BodyPbrMaps, env: THREE.Texture | null) {

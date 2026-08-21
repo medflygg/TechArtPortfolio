@@ -53,17 +53,19 @@ export const CHAPTERS: {
 ];
 
 /** Scroll narrative spine (Order / Interior cabin stay click-driven). */
-export const SCROLL_SPINE: ChapterId[] = [
+export const SCROLL_SPINE = [
   "hero",
   "specs",
   "acceleration",
   "quattro",
   "dynamics",
   "exterior",
-];
+] as const satisfies readonly ChapterId[];
+
+export type ScrollSpineId = (typeof SCROLL_SPINE)[number];
 
 /** Viewport heights per spine chapter — acceleration is long so the strip can scrub + dwell on 3.9. */
-export const SCROLL_VH: Record<(typeof SCROLL_SPINE)[number], number> = {
+export const SCROLL_VH: Record<ScrollSpineId, number> = {
   hero: 100,
   specs: 190,
   acceleration: 300,

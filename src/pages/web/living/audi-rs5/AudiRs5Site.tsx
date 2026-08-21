@@ -34,7 +34,7 @@ import {
 } from "./audiRs5Data";
 import { AudiRs5Canvas } from "./AudiRs5Canvas";
 
-export type LivingMode = "full" | "thumb" | "immersive";
+export type LivingMode = "full" | "thumb";
 
 type Props = {
   accent: string;
@@ -42,7 +42,7 @@ type Props = {
   mode: LivingMode;
 };
 
-const isLive = (mode: LivingMode) => mode === "full" || mode === "immersive";
+const isLive = (mode: LivingMode) => mode === "full";
 
 const COPY = {
   en: {
@@ -1887,16 +1887,14 @@ export function AudiRs5Site({ accent, locale, mode }: Props) {
       style={{ "--live-a": accent } as CSSProperties}
     >
       <Styles />
-      {mode !== "immersive" && (
-        <header className="rs5-chrome" aria-hidden>
-          <span className="rs5-chrome__dots">
-            <i />
-            <i />
-            <i />
-          </span>
-          <span>{url}</span>
-        </header>
-      )}
+      <header className="rs5-chrome" aria-hidden>
+        <span className="rs5-chrome__dots">
+          <i />
+          <i />
+          <i />
+        </span>
+        <span>{url}</span>
+      </header>
 
       <div className="rs5-stage">
         {isLive(mode) && (

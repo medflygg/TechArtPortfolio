@@ -15,7 +15,7 @@ import { ShikhovoSite } from "./ShikhovoSite";
 import { VesperSite } from "./VesperSite";
 import { photos } from "./photos";
 
-export type LivingMode = "full" | "thumb" | "immersive";
+export type LivingMode = "full" | "thumb";
 
 type Locale = "en" | "ru";
 
