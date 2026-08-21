@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Nav } from "./components/Nav";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { CasePage } from "./pages/CasePage";
@@ -8,15 +8,19 @@ import { ShadersPage } from "./pages/ShadersPage";
 import { WebShadersPage } from "./pages/WebShadersPage";
 import { WorkTaPage } from "./pages/WorkTaPage";
 import { WorkWebPage } from "./pages/WorkWebPage";
+import { WebCaseFullscreenPage } from "./pages/web/WebCaseFullscreenPage";
 import { WebCasePage } from "./pages/web/WebCasePage";
 import { WebCategoryPage } from "./pages/web/WebCategoryPage";
 import "./App.css";
 
 export default function App() {
+  const { pathname } = useLocation();
+  const hideHostNav = /\/work\/web\/[^/]+\/[^/]+\/full\/?$/.test(pathname);
+
   return (
-    <div className="app-shell">
+    <div className={`app-shell${hideHostNav ? " app-shell--live-fs" : ""}`}>
       <ScrollToTop />
-      <Nav />
+      {!hideHostNav && <Nav />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/work" element={<Navigate to="/work/web" replace />} />
@@ -24,6 +28,7 @@ export default function App() {
         <Route path="/work/web" element={<WorkWebPage />} />
         <Route path="/work/web/brand" element={<Navigate to="/work/web/launch" replace />} />
         <Route path="/work/web/brand/:slug" element={<Navigate to="/work/web/launch" replace />} />
+        <Route path="/work/web/:category/:slug/full" element={<WebCaseFullscreenPage />} />
         <Route path="/work/web/:category/:slug" element={<WebCasePage />} />
         <Route path="/work/web/:category" element={<WebCategoryPage />} />
         <Route path="/work/mass-npc" element={<CasePage />} />

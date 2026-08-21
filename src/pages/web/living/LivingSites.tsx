@@ -5,6 +5,7 @@ import {
   type ReactNode,
   useState,
 } from "react";
+import { AudiRs5Site } from "./audi-rs5/AudiRs5Site";
 import { GreenBasketSite } from "./GreenBasketSite";
 import { KilnAtelierSite } from "./KilnAtelierSite";
 import { MochalkiSite } from "./MochalkiSite";
@@ -14,7 +15,7 @@ import { ShikhovoSite } from "./ShikhovoSite";
 import { VesperSite } from "./VesperSite";
 import { photos } from "./photos";
 
-export type LivingMode = "full" | "thumb";
+export type LivingMode = "full" | "thumb" | "immersive";
 
 type Locale = "en" | "ru";
 
@@ -2832,6 +2833,7 @@ const SITES: Record<
   ether: (p) => <EtherSite {...p} />,
   vesper: (p) => <VesperSite {...p} />,
   shikhovo: (p) => <ShikhovoSite {...p} />,
+  "audi-rs5": (p) => <AudiRs5Site {...p} />,
 };
 
 export function LivingSite({

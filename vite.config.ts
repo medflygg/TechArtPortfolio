@@ -25,4 +25,15 @@ export default defineConfig({
       },
     },
   ],
+  server: {
+    watch: {
+      // Large binaries and generated QA captures can EBUSY the Windows FS watcher
+      ignored: [
+        "**/public/portfolio/**/*.glb",
+        "**/public/portfolio/**/*.hdr",
+        "**/public/portfolio/**/*.jpg",
+        "**/docs/audi-rs5-qa/**",
+      ],
+    },
+  },
 });

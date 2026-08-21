@@ -9,8 +9,8 @@ export type WebCaseMeta = {
   kind: WebCaseKind;
   livingId?: string;
   portfolioId?: string;
-  /** On hold — keep code, hide from listings + routes */
-  hidden?: boolean;
+  /** Prefer a dedicated edge-to-edge /fullscreen route from the case bar */
+  fullscreen?: boolean;
 };
 
 export const webCategories: {
@@ -52,6 +52,13 @@ export const webCases: WebCaseMeta[] = [
     category: "launch",
     accent: "#6B4EFF",
     kind: "living",
+  },
+  {
+    id: "audi-rs5",
+    category: "launch",
+    accent: "#D7B98F",
+    kind: "living",
+    fullscreen: true,
   },
   {
     id: "kiln-site",

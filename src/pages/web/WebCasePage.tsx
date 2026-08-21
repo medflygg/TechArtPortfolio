@@ -43,9 +43,19 @@ export function WebCasePage() {
               <p className="site-case__role site-case__bar-role">{w.caseRole}</p>
             </div>
           </div>
-          <Link className="btn btn--accent site-case__bar-cta" to="/contact">
-            {w.caseCta}
-          </Link>
+          <div className="site-case__bar-actions">
+            {meta.fullscreen && (
+              <Link
+                className="btn site-case__bar-fs"
+                to={`/work/web/${cat.id}/${meta.id}/full`}
+              >
+                {w.caseFullscreen}
+              </Link>
+            )}
+            <Link className="btn btn--accent site-case__bar-cta" to="/contact">
+              {w.caseCta}
+            </Link>
+          </div>
         </div>
 
         <div className="site-case__stage">

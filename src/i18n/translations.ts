@@ -80,6 +80,8 @@ export const translations = {
       caseCtaBody:
         "Shops, ateliers, dashboards, procedural surfaces — plus deploy, domain, Cloudflare and support. Write me.",
       caseCta: "Contact",
+      caseFullscreen: "Fullscreen",
+      caseExitFullscreen: "Close",
       studio: {
         title: "Procedural shader studio",
         tags: "WebGL · Export · Live lab",
@@ -135,6 +137,10 @@ export const translations = {
           title: "ÉTHER",
           tags: "Bespoke scent · Atmosphere · Sound",
         },
+        "audi-rs5": {
+          title: "Audi RS 5",
+          tags: "Digital sculpture · Configurator · 2020",
+        },
         shikhovo: {
           title: "Shikhovo",
           tags: "Family farm · Map · Tickets · RU",
@@ -181,6 +187,12 @@ export const translations = {
           title: "ÉTHER",
           tags: "Atmosphere · Sound · DNA · Commission",
           lead: "No finished bottle — immerse in abstract fields and sound, then commission a scent composed only for you.",
+        },
+        "audi-rs5": {
+          audience: "Performance digital showroom",
+          title: "Audi RS 5 Sportback",
+          tags: "3D · Configurator · Material data sculpture",
+          lead: "Digital sculpture of the RS 5 — exterior and cabin configuration with spatial performance scenes for acceleration, quattro, and DRC.",
         },
         shikhovo: {
           audience: "Family eco-farm",
@@ -430,6 +442,8 @@ export const translations = {
       caseCtaBody:
         "Магазины, ателье, дашборды, процедурные поверхности — плюс запуск, домен, Cloudflare и поддержка. Напишите.",
       caseCta: "Связаться",
+      caseFullscreen: "На весь экран",
+      caseExitFullscreen: "Закрыть",
       studio: {
         title: "Procedural shader studio",
         tags: "WebGL · Экспорт · Live lab",
@@ -485,6 +499,10 @@ export const translations = {
           title: "ÉTHER",
           tags: "Аромат на заказ · Атмосфера · Звук",
         },
+        "audi-rs5": {
+          title: "Audi RS 5",
+          tags: "Digital sculpture · Конфигуратор · 2020",
+        },
         shikhovo: {
           title: "Шихово",
           tags: "Семейная ферма · Карта · Билеты",
@@ -531,6 +549,12 @@ export const translations = {
           title: "ÉTHER",
           tags: "Атмосфера · Звук · ДНК · Заказ",
           lead: "Готового флакона нет — сначала атмосфера и звук, затем аромат, собранный только для вас.",
+        },
+        "audi-rs5": {
+          audience: "Перформанс-шоурум",
+          title: "Audi RS 5 Sportback",
+          tags: "3D · Конфигуратор · Material data sculpture",
+          lead: "Цифровая скульптура RS 5 — конфигуратор кузова и салона плюс пространственные сцены разгона, quattro и DRC.",
         },
         shikhovo: {
           audience: "Семейная зооферма",
