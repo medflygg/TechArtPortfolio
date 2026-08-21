@@ -44,7 +44,7 @@ export function WebCasePage() {
             </div>
           </div>
           <div className="site-case__bar-actions">
-            {meta.fullscreen && (
+            {isLiving && meta.fullscreen !== false && (
               <Link
                 className="btn site-case__bar-fs"
                 to={`/work/web/${cat.id}/${meta.id}/full`}

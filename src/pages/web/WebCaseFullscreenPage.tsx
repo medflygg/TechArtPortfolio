@@ -10,7 +10,13 @@ export function WebCaseFullscreenPage() {
   const cat = category ? getWebCategory(category) : null;
   const meta = slug ? getWebCase(slug) : null;
 
-  if (!cat || !meta || meta.category !== cat.id || !meta.fullscreen || meta.kind === "carousel") {
+  if (
+    !cat ||
+    !meta ||
+    meta.category !== cat.id ||
+    meta.kind === "carousel" ||
+    meta.fullscreen === false
+  ) {
     return <Navigate to="/work/web" replace />;
   }
 
@@ -33,7 +39,7 @@ export function WebCaseFullscreenPage() {
           caseId={meta.livingId ?? meta.id}
           accent={meta.accent}
           locale={locale}
-          mode="immersive"
+          mode="full"
         />
       </div>
     </main>

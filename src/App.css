@@ -2049,6 +2049,12 @@
   opacity: 1;
 }
 
+/* Immersive: drop fake browser chrome, reclaim the strip */
+.live-fs .live-chrome,
+.live-fs .rs5-chrome {
+  display: none !important;
+}
+
 .site-case__cta {
   display: flex;
   align-items: center;

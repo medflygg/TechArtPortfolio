@@ -9,7 +9,10 @@ export type WebCaseMeta = {
   kind: WebCaseKind;
   livingId?: string;
   portfolioId?: string;
-  /** Prefer a dedicated edge-to-edge /fullscreen route from the case bar */
+  /**
+   * Prefer a dedicated edge-to-edge /fullscreen route from the case bar.
+   * Defaults to true for living cases; set false to hide the control.
+   */
   fullscreen?: boolean;
 };
 
@@ -58,7 +61,6 @@ export const webCases: WebCaseMeta[] = [
     category: "launch",
     accent: "#D7B98F",
     kind: "living",
-    fullscreen: true,
   },
   {
     id: "kiln-site",
