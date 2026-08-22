@@ -2833,7 +2833,7 @@ const SITES: Record<
   ether: (p) => <EtherSite {...p} />,
   vesper: (p) => <VesperSite {...p} />,
   shikhovo: (p) => <ShikhovoSite {...p} />,
-  "audi-rs5": (p) => <AudiRs5Site {...p} />,
+  "audi-rs5": ({ accent, mode }) => <AudiRs5Site accent={accent} locale="en" mode={mode} />,
 };
 
 export function LivingSite({

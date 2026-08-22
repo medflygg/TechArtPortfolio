@@ -38,7 +38,7 @@ export type LivingMode = "full" | "thumb";
 
 type Props = {
   accent: string;
-  locale: Locale;
+  locale?: Locale;
   mode: LivingMode;
 };
 
@@ -1558,8 +1558,9 @@ function Styles() {
   );
 }
 
-export function AudiRs5Site({ accent, locale, mode }: Props) {
-  const t = COPY[locale] ?? COPY.en;
+export function AudiRs5Site({ accent, mode }: Props) {
+  const locale: Locale = "en";
+  const t = COPY.en;
   const [config, setConfig] = useState<ConfigState>(DEFAULT_CONFIG);
   const [ready, setReady] = useState(false);
   const [progress, setProgress] = useState(0);
